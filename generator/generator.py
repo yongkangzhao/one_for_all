@@ -4,22 +4,18 @@ import argparse
 import json
 import re
 import random
-import pymongo
+import psycopg
+
 from datetime import datetime
-def main(prompts, db):
+def main(args):
+    prompts = json.load(open(args.prompt_path, "r"))
+    conn = psycopg.connect(host=args.host, port=args.port, user=args.user, password=args.password, database=args.database)
+    
     print("loading model")
     prober = T5Probe(model_name_or_path="t5-large")
     print("model loaded")
     while True:
         for prompt_template in prompts:
-            # prompt_template = random.sample(prompts, 1)[0]
-            # print(prompt_template)
-            collection = db[prompt_template['MASK_TYPE']]
-            collection.create_index("value", unique=True)
-            collection.create_index("created_at", unique=False)
-            collection.create_index("updated_at", unique=False)
-            collection.create_index("status", unique=False)
-            collection.create_index("source", unique=False)
 
             entities = get_entity_from_prompt(prompt_template['prompt'])
             if 'MASK' in entities:
@@ -29,7 +25,7 @@ def main(prompts, db):
             for entity_type in entities:
                 if entity_type not in entity:
                     # entity[entity_type] = sample_entity(db, entity_type)
-                    entity[entity_type] = get_limited_entities(db, entity_type, {"disposition":"seed"}, 50)
+                    entity[entity_type] = get_limited_entities(conn, entity_type, {"disposition":"seed"}, 50)
             # print(entity)
             entity_sample = [[]]
             for entity_type in entities:
@@ -80,14 +76,10 @@ def get_limited_entities(db, entity_type, query={}, limit=0):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--host", type=str, default="localhost")
-    parser.add_argument("--port", type=int, default=27017)
-    parser.add_argument("--db", type=str, default="psycho_dev")
+    parser.add_argument("--port", type=int, default=5432)
+    parser.add_argument("--database", type=str, default="postgres")
+    parser.add_argument("--user", type=str, default="postgres")
+    parser.add_argument("--password", type=str, default="postgres")
     parser.add_argument("--prompt_path", type=str, required=True)
-
-
     args = parser.parse_args()
-
-    prompts = json.load(open(args.prompt_path, "r"))
-    client = pymongo.MongoClient(args.host, args.port)
-    db = client[args.db]
-    main(prompts, db)
+    main(args)
