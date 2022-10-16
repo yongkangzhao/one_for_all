@@ -5,11 +5,15 @@ import json
 import re
 import random
 import psycopg
+from postgresAPI import PostgresAPI
 
 from datetime import datetime
 def main(args):
+
+    db = PostgresAPI(args.database, args.user, args.password, args.host, args.port)
+
     prompts = json.load(open(args.prompt_path, "r"))
-    conn = psycopg.connect(host=args.host, port=args.port, user=args.user, password=args.password, database=args.database)
+    
     
     print("loading model")
     prober = T5Probe(model_name_or_path="t5-large")
@@ -25,7 +29,8 @@ def main(args):
             for entity_type in entities:
                 if entity_type not in entity:
                     # entity[entity_type] = sample_entity(db, entity_type)
-                    entity[entity_type] = get_limited_entities(conn, entity_type, {"disposition":"seed"}, 50)
+                    entity[entity_type] = db.get_limited_entities(entity_type, 50)
+                    
             # print(entity)
             entity_sample = [[]]
             for entity_type in entities:
@@ -57,7 +62,8 @@ def main(args):
                             "created_at": datetime.now(),
                             "status": "new",
                     }
-                    collection.update_one({"value": token['token']}, {"$set": data, "$setOnInsert": set_on_insert, "$addToSet":{"source.prompt_template."+prompt_template['prompt']:query_prompt,"disposition": "new"} ,"$inc":{"count":1}}, upsert=True)
+                    # collection.update_one({"value": token['token']}, {"$set": data, "$setOnInsert": set_on_insert, "$addToSet":{"source.prompt_template."+prompt_template['prompt']:query_prompt,"disposition": "new"} ,"$inc":{"count":1}}, upsert=True)
+                    db.upsert_entity(prompt_template['MASK_TYPE'], token['token'], json.dumps({prompt_template['prompt']:query_prompt}))
                     print(token['token'], end='; ')
                 print("\n=====================================")
         break
