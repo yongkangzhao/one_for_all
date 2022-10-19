@@ -93,7 +93,7 @@ services:
   postgres:
     image: postgres:13.3-alpine
     volumes:
-      - /home/ubuntu/database/postgres/one_for_all:/var/lib/postgresql/data
+      - /home/${USERNAME}/database/postgres/one_for_all:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
