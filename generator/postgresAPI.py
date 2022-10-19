@@ -463,23 +463,25 @@ class PostgresAPI:
             prompt_example_id = prompt_example_id[0]
 
         # retrive prompt template, prompt instance, entity with counts based on entity and entity type
+        
         cur.execute("SELECT prompt_template_text, prompt_instance_text, text, prompt_instance.count, prompt_example.count FROM prompt_template JOIN prompt_instance ON prompt_template.id=prompt_instance.prompt_template_id JOIN prompt_example ON prompt_instance.id=prompt_example.prompt_instance_id JOIN examples_example ON prompt_example.example_id = examples_example.id WHERE examples_example.id=%s AND prompt_template.target_entity_type=%s", (example_id, entity_type))
         
         data = cur.fetchall()
+        # data = [('becoming a [MASK] is...sona] and ', 'becoming a [MASK] is...shady and ', 'victim', 20, 20), ('becoming a [MASK] is...sona] and ', 'becoming a [MASK] is... liar and ', 'victim', 20, 5), ('becoming a [MASK] is...sona] and ', 'becoming a [MASK] is...ardly and ', 'victim', 20, 8), ('becoming a [MASK] is...sona] and ', 'becoming a [MASK] is...itful and ', 'victim', 21, 21)]
         # transform to dict
         # template, template_count, instance, instance_count
-        meta = {"entity_type": entity_type, "count": sum([e[4] for e in data])}
+        meta = {"entity_type": entity_type}
         
-        # meta = {"entity_type": entity_type} | {e[0]: {e[1]: {e[2]: {"prompt_instance_count": e[3], "prompt_example_count": e[4]}}} for e in data}
         for e in data:
             if e[0] not in meta:
-                meta[e[0]] = {}
+                meta[e[0]] = {"count": 0}
             if e[1] not in meta[e[0]]:
                 meta[e[0]][e[1]] = {}
-            meta[e[0]][e[1]][e[2]] = {"prompt_instance_count": e[3], "prompt_example_count": e[4]}
+            meta[e[0]][e[1]][e[2]] = {"count": e[4]}
+            meta[e[0]]["count"] += e[4]
         # update meta
         cur.execute("UPDATE examples_example SET meta=%s WHERE id=%s", (json.dumps(meta), example_id))
-
+        
 
 
         self.conn.commit()
