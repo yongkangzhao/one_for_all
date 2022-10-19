@@ -63,7 +63,7 @@ def main(args):
                             "status": "new",
                     }
                     # collection.update_one({"value": token['token']}, {"$set": data, "$setOnInsert": set_on_insert, "$addToSet":{"source.prompt_template."+prompt_template['prompt']:query_prompt,"disposition": "new"} ,"$inc":{"count":1}}, upsert=True)
-                    db.upsert_entity(prompt_template['MASK_TYPE'], token['token'], json.dumps({prompt_template['prompt']:query_prompt}))
+                    db.upsert_entity(prompt_template['MASK_TYPE'], token['token'], prompt_template['prompt'], query_prompt)
                     print(token['token'], end='; ')
                 print("\n=====================================")
         break

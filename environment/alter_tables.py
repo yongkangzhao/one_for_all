@@ -272,10 +272,32 @@ def make_categorytype_text_unique():
             raise e
     conn.commit()
 
+def create_tables():
+    conn = connect()
+    cur = conn.cursor()
+    # create table
+    cur.execute("CREATE TABLE IF NOT EXISTS prompt_template (id SERIAL PRIMARY KEY, prompt_template_text TEXT, target_entity_type TEXT);")
+    cur.execute("CREATE TABLE IF NOT EXISTS prompt_instance (id SERIAL PRIMARY KEY, prompt_template_id INTEGER, prompt_instance_text TEXT, count INTEGER);")
+    cur.execute("CREATE TABLE IF NOT EXISTS prompt_example  (id SERIAL PRIMARY KEY, prompt_instance_id INTEGER, example_id INTEGER, count INTEGER);")
+    # create index
+    cur.execute("CREATE INDEX IF NOT EXISTS prompt_template_id_idx ON prompt_template (id);")
+    cur.execute("CREATE INDEX IF NOT EXISTS prompt_instance_id_idx ON prompt_instance (id);")
+    cur.execute("CREATE INDEX IF NOT EXISTS prompt_example_id_idx ON prompt_example (id);")
+    # prompt_template_text
+    cur.execute("CREATE INDEX IF NOT EXISTS prompt_template_text_idx ON prompt_template (prompt_template_text);")
+    cur.execute("CREATE INDEX IF NOT EXISTS prompt_instance_text_idx ON prompt_instance (prompt_instance_text);")
+    # compound index on prompt example
+    cur.execute("CREATE INDEX IF NOT EXISTS prompt_instance_id_example_id_idx ON prompt_example (prompt_instance_id, example_id);")
+
+    conn.commit()
+
 def main():
     make_project_name_unique()
     create_project()
     add_features_to_example()
+    make_categorytype_text_unique()
+    create_tables()
+
 
 if __name__ == '__main__':
     main()
