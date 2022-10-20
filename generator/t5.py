@@ -45,6 +45,7 @@ class T5Probe:
         return all_formatted_lines, mappings
 
     def get_top_predictions(self, lines, mappings, numresults, max_new_tokens):
+        # TODO add support to define max min tokens to generate so we can control sentence vs word level generation
         outputs = []
         all_extractions = []
         num_beams = 128
