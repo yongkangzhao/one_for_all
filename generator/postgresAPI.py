@@ -485,4 +485,3 @@ class PostgresAPI:
 
 
         self.conn.commit()
-        print(1)
