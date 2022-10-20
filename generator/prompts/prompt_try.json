@@ -1,7 +1,25 @@
 [
     {
+        "prompt": "Solving problems requires analytical skills. [broad_activities] requires [MASK] and ", 
+        "MASK_TYPE": "skills", 
+        "prompt_quality": "high" 
+    },
+    {
+        "prompt": "Performing [broad_activities] makes a person feel [MASK] and ", 
+        "MASK_TYPE": "values"
+    },
+    {
+        "prompt": "A person who values [values] is suitable to work as [MASK] and ", 
+        "MASK_TYPE": "occupation"
+    },
+    {
+        "prompt": "A [persona] is suitable to work as [MASK] or ", 
+        "MASK_TYPE": "occupation"
+    },
+    {
         "prompt": "A hero is brave. A mastermind is calculating. A [persona] is [MASK] and ", 
-        "MASK_TYPE": "traits"
+        "MASK_TYPE": "traits", 
+        "prompt_quality": "high"
     },
     {
         "prompt": "People with traits of [traits.txt] are not for working as [MASK] or ", 
@@ -26,6 +44,10 @@
     {
         "prompt": "A [occupation] is stereotyped as a [MASK] person and ", 
         "MASK_TYPE": "aptitude"
+    },
+    {
+        "prompt": "A [occupation] requires knowledge in [MASK] and ", 
+        "MASK_TYPE": "fieldOfStudy"
     },
     {
         "prompt": "A [occupation] requires a degree in [MASK] and ", 
