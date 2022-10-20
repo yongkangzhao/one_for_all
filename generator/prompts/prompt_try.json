@@ -1,7 +1,15 @@
 [
     {
-        "prompt": "People with traits of [traits] are for working as [MASK] or ", 
+        "prompt": "A hero is brave. A mastermind is calculating. A [persona] is [MASK] and ", 
         "MASK_TYPE": "traits"
+    },
+    {
+        "prompt": "People with traits of [traits.txt] are not for working as [MASK] or ", 
+        "MASK_TYPE": "occupation"
+    },
+    {
+        "prompt": "People with traits of [traits.txt] are for working as [MASK] or ", 
+        "MASK_TYPE": "occupation"
     },
     {
         "prompt": "People working as [occupation] are often described as [MASK] and ", 

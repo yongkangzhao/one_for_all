@@ -70,7 +70,7 @@ def main(args):
 
 
 def get_entity_from_prompt(prompt):
-    return re.findall('\[([A-z]*)\]', prompt)
+    return re.findall('\[([A-z.]*)\]', prompt)
 
 def get_limited_entities(db, entity_type, query={}, limit=0):
     collection = db[entity_type]
