@@ -1,61 +1,96 @@
 [
     {
-        "prompt": "Solving problems requires analytical skills. [broad_activities] requires [MASK] and ", 
-        "MASK_TYPE": "skills", 
-        "prompt_quality": "high" 
+        "prompt": "An executive exhibits traits of leadership. A [occupation] exhibits traits of [MASK] and ", 
+        "MASK_TYPE": "traits",
+        "prompt_quality": "good"
     },
     {
-        "prompt": "Performing [broad_activities] makes a person feel [MASK] and ", 
-        "MASK_TYPE": "values"
+        "prompt": "A banker is motivated by financial success. A [occupation] is motivated by [MASK] and ", 
+        "MASK_TYPE": "motivation", 
+        "prompt_quality": "good"
     },
     {
-        "prompt": "A person who values [values] is suitable to work as [MASK] and ", 
-        "MASK_TYPE": "occupation"
+        "prompt": "A doctor values philanthropy. A [occupation] values [MASK] and ", 
+        "MASK_TYPE": "values", 
+        "prompt_quality": "good"
+    },
+    {
+        "prompt": "An accountant is meticulous. A nurse is caring. A [occupation] is [MASK] and ", 
+        "MASK_TYPE": "traits", 
+        "prompt_quality": "good"
+    },
+    {
+        "prompt": "The occupation [MASK] requires [ncskills] skills", 
+        "MASK_TYPE": "occupation", 
+        "prompt_quality": "poor"
+    },
+    {
+        "prompt": "Occupation requiring [ncskills] skills: [MASK] and ", 
+        "MASK_TYPE": "occupation", 
+        "prompt_quality": "fair"
+    },
+    {
+        "prompt": "Tasks requiring [ncskills] skills: [MASK] and ", 
+        "MASK_TYPE": "tasks", 
+        "prompt_quality": "poor"
+    },
+    {
+        "prompt": "People with traits of [traits.txt] are good at [MASK] or ", 
+        "MASK_TYPE": "tasks", 
+        "prompt_quality": "fair"
+    },
+    {
+        "prompt": "Task [traits.txt] people are good at: [MASK] and ", 
+        "MASK_TYPE": "tasks", 
+        "prompt_quality": "fair"
+    },
+    {
+        "prompt": "People with traits of [traits.txt] are suitable for working as [MASK] or ", 
+        "MASK_TYPE": "occupation", 
+        "prompt_quality": "fair"
+    },
+    {
+        "prompt": "A [occupation] requires knowledge in [MASK] and ", 
+        "MASK_TYPE": "fieldOfStudy", 
+        "prompt_quality": "good"
     },
     {
         "prompt": "A [persona] is suitable to work as [MASK] or ", 
-        "MASK_TYPE": "occupation"
+        "MASK_TYPE": "occupation", 
+        "prompt_quality": "fair"
+    },
+    {
+        "prompt": "A person who values [values] is suitable to work as [MASK] and ", 
+        "MASK_TYPE": "occupation", 
+        "prompt_quality": "good"
+    },
+    {
+        "prompt": "A person who work as [MASK] value [values] and ", 
+        "MASK_TYPE": "occupation", 
+        "prompt_quality": "bad"
+    },
+    {
+        "prompt": "[broad_activities] makes a person feel [MASK] and ", 
+        "MASK_TYPE": "values"
+    },
+    {
+        "prompt": "Solving problems requires analytical skills. [broad_activities] requires [MASK] and ", 
+        "MASK_TYPE": "skills", 
+        "prompt_quality": "good" 
     },
     {
         "prompt": "A hero is brave. A mastermind is calculating. A [persona] is [MASK] and ", 
         "MASK_TYPE": "traits", 
-        "prompt_quality": "high"
+        "prompt_quality": "good"
     },
     {
         "prompt": "People with traits of [traits.txt] are not for working as [MASK] or ", 
         "MASK_TYPE": "occupation"
     },
     {
-        "prompt": "People with traits of [traits.txt] are for working as [MASK] or ", 
-        "MASK_TYPE": "occupation"
-    },
-    {
         "prompt": "People working as [occupation] are often described as [MASK] and ", 
-        "MASK_TYPE": "perception"
-    },
-    {
-        "prompt": "Adjectives associated with [occupation] is [MASK] and ", 
-        "MASK_TYPE": "aptitude"
-    },
-    {
-        "prompt": "An accountant is meticulous. A nurse is caring. A [occupation] is [MASK] and ", 
-        "MASK_TYPE": "traits"
-    },
-    {
-        "prompt": "A [occupation] is stereotyped as a [MASK] person and ", 
-        "MASK_TYPE": "aptitude"
-    },
-    {
-        "prompt": "A [occupation] requires knowledge in [MASK] and ", 
-        "MASK_TYPE": "fieldOfStudy"
-    },
-    {
-        "prompt": "A [occupation] requires a degree in [MASK] and ", 
-        "MASK_TYPE": "fieldOfStudy"
-    },
-    {
-        "prompt": "Traits a [occupation] is associated with: [MASK] and ", 
-        "MASK_TYPE": "aptitude"
+        "MASK_TYPE": "perception", 
+        "prompt_quality": "good"
     },
     {
         "prompt": "Tasks a [persona] excels in: [MASK] and ",
