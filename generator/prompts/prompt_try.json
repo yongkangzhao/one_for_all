@@ -1,5 +1,20 @@
 [
     {
+        "prompt": "Planning budget requires carefulness. [broad_activities] requires [MASK] and ", 
+        "MASK_TYPE": "tasks", 
+        "prompt_quality": "poor"
+    },
+    {
+        "prompt": "A resaerch is good at data analysis. A mastermind is good at project management. A [persona] is good at [MASK] and ",
+        "MASK_TYPE": "skills", 
+        "prompt_quality": "good"
+    },
+    {
+        "prompt": "A mastermind is good at scheming. An advocate is good at motivating. A [persona] is good at [MASK] and ",
+        "MASK_TYPE": "traits", 
+        "prompt_quality": "good"
+    },
+    {
         "prompt": "An executive exhibits traits of leadership. A [occupation] exhibits traits of [MASK] and ", 
         "MASK_TYPE": "traits",
         "prompt_quality": "good"
@@ -28,11 +43,6 @@
         "prompt": "Occupation requiring [ncskills] skills: [MASK] and ", 
         "MASK_TYPE": "occupation", 
         "prompt_quality": "fair"
-    },
-    {
-        "prompt": "Tasks requiring [ncskills] skills: [MASK] and ", 
-        "MASK_TYPE": "tasks", 
-        "prompt_quality": "poor"
     },
     {
         "prompt": "People with traits of [traits.txt] are good at [MASK] or ", 
@@ -91,10 +101,6 @@
         "prompt": "People working as [occupation] are often described as [MASK] and ", 
         "MASK_TYPE": "perception", 
         "prompt_quality": "good"
-    },
-    {
-        "prompt": "Tasks a [persona] excels in: [MASK] and ",
-        "MASK_TYPE": "occupation"
     },
     {
         "prompt": "A [persona] is good at [MASK] and ",
