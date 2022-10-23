@@ -50,7 +50,7 @@ class T5Probe:
         all_extractions = []
         num_beams = 128
         for l in lines:
-            inputs = self.tokenizer([l], return_tensors='pt')
+            inputs = self.tokenizer([l], return_tensors='pt', max_length=4096)
             inputs.to(self.device)
             with torch.cuda.amp.autocast(dtype = torch.float):
               generated_ids = self.model.generate(inputs.input_ids,

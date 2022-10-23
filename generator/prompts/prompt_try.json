@@ -1,8 +1,18 @@
 [
     {
-        "prompt": "Planning budget requires carefulness. [broad_activities] requires [MASK] and ", 
-        "MASK_TYPE": "tasks", 
+        "prompt": "Hainvg experience of [broad_activities] is required for working as [MASK] because ",
+        "MASK_TYPE": "occupation", 
         "prompt_quality": "poor"
+    },
+    {
+        "prompt": "person seen as [persona] is perceived as a [MASK] person",
+        "MASK_TYPE": "perception",
+        "prompt_quality": "good"
+    },
+    {
+        "prompt": "Planning budget requires carefulness. Doing research requires persistence. [broad_activities] requires [MASK] and ", 
+        "MASK_TYPE": "tasks", 
+        "prompt_quality": "fair"
     },
     {
         "prompt": "A resaerch is good at data analysis. A mastermind is good at project management. A [persona] is good at [MASK] and ",
