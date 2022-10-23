@@ -1,6 +1,6 @@
 [
     {
-        "prompt": "Hainvg experience of [broad_activities] is required for working as [MASK] because ",
+        "prompt": "Having experience of [broad_activities] is required for working as [MASK] because ",
         "MASK_TYPE": "occupation", 
         "prompt_quality": "poor"
     },
@@ -15,7 +15,7 @@
         "prompt_quality": "fair"
     },
     {
-        "prompt": "A resaerch is good at data analysis. A mastermind is good at project management. A [persona] is good at [MASK] and ",
+        "prompt": "A researcher is good at data analysis. A mastermind is good at project management. A [persona] is good at [MASK] and ",
         "MASK_TYPE": "skills", 
         "prompt_quality": "good"
     },
@@ -43,9 +43,9 @@
         "prompt": "An accountant is meticulous. A nurse is caring. A [occupation] is [MASK] and ", 
         "MASK_TYPE": "traits", 
         "prompt_quality": "good"
-    },
+    },    
     {
-        "prompt": "The occupation [MASK] requires [ncskills] skills", 
+        "prompt": "working as a [MASK] whom needs [ncskills] and", 
         "MASK_TYPE": "occupation", 
         "prompt_quality": "poor"
     },
@@ -85,9 +85,9 @@
         "prompt_quality": "good"
     },
     {
-        "prompt": "A person who work as [MASK] value [values] and ", 
+        "prompt": "working as a [MASK] whom values [values] and ", 
         "MASK_TYPE": "occupation", 
-        "prompt_quality": "bad"
+        "prompt_quality": "poor"
     },
     {
         "prompt": "[broad_activities] makes a person feel [MASK] and ", 
