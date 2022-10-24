@@ -5,7 +5,7 @@
         "prompt_quality": "good"
     },
     {
-        "prompt": "Having experience of [tasks] is required for working as [MASK] because ",
+        "prompt": "Having experience of [tasks] is required for working as a [MASK] because ",
         "MASK_TYPE": "occupation", 
         "prompt_quality": "poor"
     },
@@ -65,7 +65,7 @@
         "prompt_quality": "fair"
     },
     {
-        "prompt": "People with traits of [traits] are suitable for working as [MASK] or ", 
+        "prompt": "People with traits of [traits] are suitable for working as a [MASK] or ", 
         "MASK_TYPE": "occupation", 
         "prompt_quality": "fair"
     },
@@ -75,12 +75,12 @@
         "prompt_quality": "good"
     },
     {
-        "prompt": "A [persona] is suitable to work as [MASK] or ", 
+        "prompt": "A [persona] is suitable to work as a [MASK] or ", 
         "MASK_TYPE": "occupation", 
         "prompt_quality": "fair"
     },
     {
-        "prompt": "A person who values [values] is suitable to work as [MASK] and ", 
+        "prompt": "A person who values [values] is suitable to work as a [MASK] and ", 
         "MASK_TYPE": "occupation", 
         "prompt_quality": "good"
     },
@@ -104,7 +104,7 @@
         "prompt_quality": "good"
     },
     {
-        "prompt": "People with traits of [traits] are not for working as [MASK] or ", 
+        "prompt": "People with traits of [traits] are not for working as a [MASK] or ", 
         "MASK_TYPE": "occupation"
     },
     {
@@ -113,7 +113,7 @@
         "prompt_quality": "good"
     },
     {
-        "prompt": "A [persona] is good at working as [MASK] and ",
+        "prompt": "A [persona] is good at working as a [MASK] and ",
         "MASK_TYPE": "occupation"
     }
 ]
