@@ -249,7 +249,7 @@ CREATE INDEX IF NOT EXISTS api_category_user_id_4a62861e
                 query = f"INSERT INTO examples_example (meta, filename, text, created_at, updated_at, project_id, uuid, upload_name, head_type, head, relation, tail_type, tail, entity_type) VALUES ('{{\"seed\": true, \"entity_type\": \"{args.collection}\"}}', 'seed', '{line.strip()}', '{datetime.now()}', '{datetime.now()}', 1, '{uuid.uuid4()}', '{line.strip()}', Null, Null, Null, Null, Null, '{args.collection}');"
                 conn.commit()
                 cur.execute(query)
-                query = f"INSERT INTO labels_category (prob, manual, created_at, updated_at, example_id, label_id, user_id, uuid) VALUES (1.0, True, '{datetime.now()}', '{datetime.now()}', (SELECT id FROM examples_example WHERE text = '{line.strip()}'), (SELECT id FROM label_types_categorytype WHERE text = 'Positive' AND project_id = '1'), 1, '{uuid.uuid4()}');"
+                query = f"INSERT INTO labels_category (prob, manual, created_at, updated_at, example_id, label_id, user_id, uuid) VALUES (1.0, True, '{datetime.now()}', '{datetime.now()}', (SELECT id FROM examples_example WHERE text = '{line.strip()}' and entity_type = '{args.collection}'), (SELECT id FROM label_types_categorytype WHERE text = 'Positive' AND project_id = '1'), 1, '{uuid.uuid4()}');"
                 cur.execute(query)
                 conn.commit()
             except Exception as e:
