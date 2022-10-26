@@ -7,4 +7,4 @@ python initializer.py --collection skill
 python initializer.py --collection ncskills
 python initializer.py --collection traits
 python initializer.py --collection values
-python initializer.py --collection broad_activities
+python initializer.py --collection tasks
