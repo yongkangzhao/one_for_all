@@ -6,7 +6,7 @@ from pprint import pprint
 scaler = torch.cuda.amp.GradScaler()
 
 class T5Probe:
-    def __init__(self, model_name_or_path="t5-large"):
+    def __init__(self, model_name_or_path="google/flan-t5-large"):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         # self.device = torch.device('cpu')
         self.tokenizer = T5Tokenizer.from_pretrained(model_name_or_path,model_max_length=512)
