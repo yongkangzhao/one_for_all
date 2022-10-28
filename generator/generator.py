@@ -28,7 +28,7 @@ def main(args):
             if p['prompt'] not in prompt_counts:
                 prompt_counts[p['prompt']] = 0.0001
         # sample a least used prompt based on the inverse counts
-        least_used_prompt = random.choices(list(prompt_counts.keys()), weights=[1/prompt_counts[p] for p in prompt_counts], k=10)
+        least_used_prompt = random.choices(list(prompt_counts.keys()), weights=[1/prompt_counts[p] for p in prompt_counts], k=20)
 
         #prompts = [{'prompt': 'person seen as [pers...SK] person', 'MASK_TYPE': 'perception', 'prompt_quality': 'good'},...]
         # get the prompt with the least used prompt
@@ -40,7 +40,6 @@ def main(args):
 
         
         for prompt in prompts:
-            print(prompt)
             # get the entities from the prompt
             entities = get_entity_from_prompt(prompt['prompt'])
             if 'MASK' in entities:
@@ -50,7 +49,7 @@ def main(args):
             for entity_type in entities:
                 if entity_type not in entity:
                     # entity[entity_type] = sample_entity(db, entity_type)
-                    entity[entity_type] = db.get_limited_entities(entity_type, 500)
+                    entity[entity_type] = db.get_limited_entities(entity_type, 5000)
                     
             # print(entity)
             entity_sample = [[]]
@@ -80,7 +79,7 @@ def main(args):
                     continue
                 for token in tokens['values']:
                     db.upsert_entity(prompt['MASK_TYPE'], token['token'], prompt['prompt'], query_prompt)
-                    print("inserting:", "entity type:", prompt['MASK_TYPE'], token['token'])
+                    print("inserting:", "prompt:", prompt['prompt'], "entity type:", prompt['MASK_TYPE'], token['token'])
                 print("\n=====================================")
     
 
