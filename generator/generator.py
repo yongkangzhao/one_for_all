@@ -80,7 +80,7 @@ def main(args):
                     continue
                 for token in tokens['values']:
                     db.upsert_entity(prompt['MASK_TYPE'], token['token'], prompt['prompt'], query_prompt)
-                    print("inserting:", "entity type:", entity_type, token['token'])
+                    print("inserting:", "entity type:", prompt['MASK_TYPE'], token['token'])
                 print("\n=====================================")
     
 
