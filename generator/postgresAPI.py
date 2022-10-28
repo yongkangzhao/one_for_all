@@ -491,6 +491,13 @@ class PostgresAPI:
         print(rows)
         return [e[0] for e in rows]
 
+    def check_prompt_exists(self, prompt):
+        # check if prompt exists
+        cur = self.conn.cursor()
+        cur.execute(f"SELECT id FROM prompt_instance WHERE prompt_instance_text = '{prompt}'")
+        rows = cur.fetchall()
+        return len(rows) > 0
+
     def upsert_entity(self, entity_type, entity, prompt_template, prompt_instance):
         cur = self.conn.cursor()
         # get prompt template id
