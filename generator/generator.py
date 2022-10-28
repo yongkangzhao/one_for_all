@@ -32,7 +32,10 @@ def main(args):
 
         #prompts = [{'prompt': 'person seen as [pers...SK] person', 'MASK_TYPE': 'perception', 'prompt_quality': 'good'},...]
         # get the prompt with the least used prompt
-        prompt = [p for p in prompts if p['prompt'] == least_used_prompt][0]
+        try:
+            prompt = [p for p in prompts if p['prompt'] == least_used_prompt][0]
+        except:
+            continue
 
 
         # get the entities from the prompt
