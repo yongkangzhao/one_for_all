@@ -26,9 +26,9 @@ def main(args):
         # {p['prompt']:p['count'] for p in used_prompts_counts}
         for p in prompts:
             if p['prompt'] not in prompt_counts:
-                prompt_counts[p['prompt']] = 0
-        # get the least used prompt
-        least_used_prompt = min(prompt_counts, key=prompt_counts.get)
+                prompt_counts[p['prompt']] = 0.0001
+        # sample a least used prompt based on the inverse counts
+        least_used_prompt = random.choices(list(prompt_counts.keys()), weights=[1/prompt_counts[p] for p in prompt_counts], k=1)[0]
 
         #prompts = [{'prompt': 'person seen as [pers...SK] person', 'MASK_TYPE': 'perception', 'prompt_quality': 'good'},...]
         # get the prompt with the least used prompt
