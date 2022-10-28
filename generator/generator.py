@@ -53,7 +53,9 @@ def main(args):
             for entity_type in entities:
                 if entity_type not in entity:
                     # entity[entity_type] = sample_entity(db, entity_type)
-                    entity[entity_type] = random.shuffle(db.get_limited_entities(entity_type, 1000))[:100]
+                    entities = db.get_limited_entities(entity_type, 1000)
+                    random.shuffle(entities)
+                    entity[entity_type] = entities[:100]
                     
             # sample entities:
 
