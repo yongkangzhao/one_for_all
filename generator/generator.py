@@ -28,57 +28,60 @@ def main(args):
             if p['prompt'] not in prompt_counts:
                 prompt_counts[p['prompt']] = 0.0001
         # sample a least used prompt based on the inverse counts
-        least_used_prompt = random.choices(list(prompt_counts.keys()), weights=[1/prompt_counts[p] for p in prompt_counts], k=1)[0]
+        least_used_prompt = random.choices(list(prompt_counts.keys()), weights=[1/prompt_counts[p] for p in prompt_counts], k=5)
 
         #prompts = [{'prompt': 'person seen as [pers...SK] person', 'MASK_TYPE': 'perception', 'prompt_quality': 'good'},...]
         # get the prompt with the least used prompt
         try:
-            prompt = [p for p in prompts if p['prompt'] == least_used_prompt][0]
+            prompts = [p for p in prompts if p['prompt'] for l in least_used_prompt if p['prompt'] == l]
+            
         except:
             continue
 
-
-        # get the entities from the prompt
-        entities = get_entity_from_prompt(prompt['prompt'])
-        if 'MASK' in entities:
-            entities.remove('MASK')
         
-        entity = {}
-        for entity_type in entities:
-            if entity_type not in entity:
-                # entity[entity_type] = sample_entity(db, entity_type)
-                entity[entity_type] = db.get_limited_entities(entity_type, 50)
-                
-        # print(entity)
-        entity_sample = [[]]
-        for entity_type in entities:
-            temp = []
-            for t in entity_sample:
-                for e in entity[entity_type]:
-                    t_temp = t.copy()
-                    t_temp.append([entity_type, e])
-                    temp.append(t_temp)
-            entity_sample = temp
+        for prompt in prompts:
 
-        for query_sample in entity_sample:
-            query_prompt = prompt['prompt']
-            for entity_type, ent in query_sample:
-                query_prompt = query_prompt.replace('['+entity_type+']', ent, 1)
-            # prompt = prompt['prompt'].format(**entity)
-            print(query_prompt)
-            # check if the prompt is already in the database
-            if db.check_prompt_exists(query_prompt):
-                continue
+            # get the entities from the prompt
+            entities = get_entity_from_prompt(prompt['prompt'])
+            if 'MASK' in entities:
+                entities.remove('MASK')
+            
+            entity = {}
+            for entity_type in entities:
+                if entity_type not in entity:
+                    # entity[entity_type] = sample_entity(db, entity_type)
+                    entity[entity_type] = db.get_limited_entities(entity_type, 50)
+                    
+            # print(entity)
+            entity_sample = [[]]
+            for entity_type in entities:
+                temp = []
+                for t in entity_sample:
+                    for e in entity[entity_type]:
+                        t_temp = t.copy()
+                        t_temp.append([entity_type, e])
+                        temp.append(t_temp)
+                entity_sample = temp
 
-            try:
-                tokens = prober(query_prompt, topk=20, max_new_tokens=50)
-            except Exception as e:
-                print("Error: ", e)
-                continue
-            for token in tokens['values']:
-                db.upsert_entity(prompt['MASK_TYPE'], token['token'], prompt['prompt'], query_prompt)
-                print(token['token'], end='; ')
-            print("\n=====================================")
+            for query_sample in entity_sample:
+                query_prompt = prompt['prompt']
+                for entity_type, ent in query_sample:
+                    query_prompt = query_prompt.replace('['+entity_type+']', ent, 1)
+                # prompt = prompt['prompt'].format(**entity)
+                print(query_prompt)
+                # check if the prompt is already in the database
+                if db.check_prompt_exists(query_prompt):
+                    continue
+
+                try:
+                    tokens = prober(query_prompt, topk=20, max_new_tokens=50)
+                except Exception as e:
+                    print("Error: ", e)
+                    continue
+                for token in tokens['values']:
+                    db.upsert_entity(prompt['MASK_TYPE'], token['token'], prompt['prompt'], query_prompt)
+                    print(token['token'], end='; ')
+                print("\n=====================================")
     
 
 
