@@ -87,6 +87,7 @@ def main(args):
                 except Exception as e:
                     print("Error: ", e)
                     continue
+                print("\n")
                 for token in tokens['values']:
                     db.upsert_entity(prompt['MASK_TYPE'], token['token'], prompt['prompt'], query_prompt)
                     print("inserting:", "prompt:", query_prompt, "entity type:", prompt['MASK_TYPE'], token['token'])
