@@ -5,6 +5,54 @@
         "prompt_quality": "good"
     },
     {
+        "prompt": "it is important to understand concept of [MASK] before thinking about [fieldOfStudy]",
+        "MASK_TYPE": "concept"
+    },
+    {
+        "prompt": "working as a [occupation] who is motivated by the need of [MASK] and ",
+        "MASK_TYPE": "motivation"
+    },
+    {
+        "prompt": "working as a [MASK] who is motivated by the need of [motivation] and ",
+        "MASK_TYPE": "motivation"
+    },
+    {
+        "prompt": "becoming a [persona] who is motivated by the need of [MASK] and ",
+        "MASK_TYPE": "motivation"
+    },
+    {
+        "prompt": "becoming a [MASK] who is motivated by the need of [motivation] and ",
+        "MASK_TYPE": "motivation"
+    },
+    {
+        "prompt": "becoming a [persona] is the result of being [MASK] and ",
+        "MASK_TYPE": "motivation"
+    },
+    {
+        "prompt": "becoming a [MASK] is the result of being [persona] and ",
+        "MASK_TYPE": "motivation"
+    },
+    {
+        "prompt": "being [persona] is caused by the need of [MASK] and",
+        "MASK_TYPE": "motivation"
+    },
+    {
+        "prompt": "being [MASK] is caused by the need of [persona] and",
+        "MASK_TYPE": "motivation"
+    },
+    {
+        "prompt": "being [persona] is caused by the need of [MASK] and",
+        "MASK_TYPE": "motivation"
+    },
+    {
+        "prompt": "being able to [MASK] is neccessary to work as a [occupation]",
+        "MASK_TYPE": "skill"
+    },
+    {
+        "prompt": "being able to [MASK] is essential to work as a [occupation]",
+        "MASK_TYPE": "skill"
+    },
+    {
         "prompt": "Having experience of [tasks] is required for working as a [MASK] because ",
         "MASK_TYPE": "occupation", 
         "prompt_quality": "poor"
