@@ -491,7 +491,7 @@ class PostgresAPI:
         cur.execute(f"SELECT text FROM examples_example JOIN labels_category ON examples_example.id=labels_category.example_id JOIN prompt_example ON examples_example.id = prompt_example.example_id WHERE labels_category.label_id IN (SELECT id FROM label_types_categorytype WHERE label_types_categorytype.text = 'Positive') AND examples_example.entity_type = '{entity_type}' GROUP BY text ORDER BY count(text) ASC LIMIT {limit}")
 
         rows = cur.fetchall()
-        print(rows)
+        # print(rows)
         return [e[0] for e in rows]
 
     def check_prompt_exists(self, prompt):
