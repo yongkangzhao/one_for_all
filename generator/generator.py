@@ -21,7 +21,7 @@ def main(args):
     iteration = 0
     while True:
         iteration += 1
-        print("Interation:", iteration)
+        print("\nIteration:", iteration)
         # get the least used prompt
         prompts = json.load(open(args.prompt_path, "r"))
         prompt_counts = db.prompt_counts()
@@ -53,9 +53,10 @@ def main(args):
             for entity_type in entities:
                 if entity_type not in entity:
                     # entity[entity_type] = sample_entity(db, entity_type)
-                    entity[entity_type] = db.get_limited_entities(entity_type, 100)
+                    entity[entity_type] = random.shuffle(db.get_limited_entities(entity_type, 1000))[:100]
                     
             # sample entities:
+
 
             # print(entity)
             entity_sample = [[]]

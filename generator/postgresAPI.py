@@ -488,7 +488,7 @@ class PostgresAPI:
         # cur.execute(f"SELECT text FROM examples_example JOIN labels_category ON examples_example.id=labels_category.example_id WHERE labels_category.label_id IN (SELECT id FROM label_types_categorytype WHERE label_types_categorytype.text = 'Positive') AND examples_example.entity_type = '{entity_type}' LIMIT {limit}")
         # cur.execute(f"SELECT text FROM examples_example  JOIN prompt_example ON examples_example.id = prompt_example.example_id WHERE examples_example.entity_type = '{entity_type}' GROUP BY text ORDER BY count(text) ASC LIMIT {limit}")
         # combine the two queries into one
-        cur.execute(f"SELECT text FROM examples_example JOIN labels_category ON examples_example.id=labels_category.example_id JOIN prompt_example ON examples_example.id = prompt_example.example_id WHERE labels_category.label_id IN (SELECT id FROM label_types_categorytype WHERE label_types_categorytype.text = 'Positive') AND examples_example.entity_type = '{entity_type}' GROUP BY text ORDER BY count(text) ASC LIMIT {limit}")
+        cur.execute(f"SELECT text FROM examples_example FULL JOIN labels_category ON examples_example.id=labels_category.example_id FULL JOIN prompt_example ON examples_example.id = prompt_example.example_id WHERE labels_category.label_id IN (SELECT id FROM label_types_categorytype WHERE label_types_categorytype.text = 'Positive') AND examples_example.entity_type = '{entity_type}' GROUP BY text ORDER BY count(text) ASC LIMIT {limit}")
 
         rows = cur.fetchall()
         # print(rows)
