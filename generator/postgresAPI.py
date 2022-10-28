@@ -478,58 +478,18 @@ CREATE INDEX IF NOT EXISTS api_category_user_id_4a62861e
     (user_id ASC NULLS LAST)
     TABLESPACE pg_default;
 """
-"""
--- Table: public.prompt_example
-
--- DROP TABLE IF EXISTS public.prompt_example;
-
-CREATE TABLE IF NOT EXISTS public.prompt_example
-(
-    id integer NOT NULL DEFAULT nextval('prompt_example_id_seq'::regclass),
-    prompt_instance_id integer,
-    example_id integer,
-    count integer,
-    CONSTRAINT prompt_example_pkey PRIMARY KEY (id)
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.prompt_example
-    OWNER to postgres;
--- Index: prompt_example_id_idx
-
--- DROP INDEX IF EXISTS public.prompt_example_id_idx;
-
-CREATE INDEX IF NOT EXISTS prompt_example_id_idx
-    ON public.prompt_example USING btree
-    (id ASC NULLS LAST)
-    TABLESPACE pg_default;
--- Index: prompt_instance_id_example_id_idx
-
--- DROP INDEX IF EXISTS public.prompt_instance_id_example_id_idx;
-
-CREATE INDEX IF NOT EXISTS prompt_instance_id_example_id_idx
-    ON public.prompt_example USING btree
-    (prompt_instance_id ASC NULLS LAST, example_id ASC NULLS LAST)
-    TABLESPACE pg_default;
-"""
 
 class PostgresAPI:
     def __init__(self, dbname, user, password, host, port):
         self.conn = psycopg.connect(dbname=dbname, user=user, password=password, host=host, port=port)
-    
     def get_limited_entities(self, entity_type, limit):
         cur = self.conn.cursor()
-        # SELECT least used entities from examples_example
-        cur.execute(f"""
-            SELECT text
-            FROM examples_example 
-            JOIN prompt_example ON examples_example.id = prompt_example.example_id
-            WHERE examples_example.entity_type = '{entity_type}'
-            GROUP BY text
-            ORDER BY count(text) ASC
-            LIMIT {limit}
-        """)
+        
+        # cur.execute(f"SELECT text FROM examples_example JOIN labels_category ON examples_example.id=labels_category.example_id WHERE labels_category.label_id IN (SELECT id FROM label_types_categorytype WHERE label_types_categorytype.text = 'Positive') AND examples_example.entity_type = '{entity_type}' LIMIT {limit}")
+        # cur.execute(f"SELECT text FROM examples_example  JOIN prompt_example ON examples_example.id = prompt_example.example_id WHERE examples_example.entity_type = '{entity_type}' GROUP BY text ORDER BY count(text) ASC LIMIT {limit}")
+        # combine the two queries into one
+        cur.execute(f"SELECT text FROM examples_example JOIN labels_category ON examples_example.id=labels_category.example_id JOIN prompt_example ON examples_example.id = prompt_example.example_id WHERE labels_category.label_id IN (SELECT id FROM label_types_categorytype WHERE label_types_categorytype.text = 'Positive') AND examples_example.entity_type = '{entity_type}' GROUP BY text ORDER BY count(text) ASC LIMIT {limit}")
+
         rows = cur.fetchall()
         print(rows)
         return [e[0] for e in rows]
