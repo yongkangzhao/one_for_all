@@ -18,7 +18,10 @@ def main(args):
     print("loading model")
     prober = T5Probe(model_name_or_path="t5-large")
     print("model loaded")
+    iteration = 0
     while True:
+        iteration += 1
+        print("Interation:", iteration)
         # get the least used prompt
         prompts = json.load(open(args.prompt_path, "r"))
         prompt_counts = db.prompt_counts()
@@ -36,6 +39,7 @@ def main(args):
             prompts = [p for p in prompts if p['prompt'] for l in least_used_prompt if p['prompt'] == l]
             
         except:
+            print('.', end='')
             continue
 
         
@@ -49,10 +53,10 @@ def main(args):
             for entity_type in entities:
                 if entity_type not in entity:
                     # entity[entity_type] = sample_entity(db, entity_type)
-                    entity[entity_type] = db.get_limited_entities(entity_type, 5000)
+                    entity[entity_type] = db.get_limited_entities(entity_type, 100)
                     
             # sample entities:
-            
+
             # print(entity)
             entity_sample = [[]]
             for entity_type in entities:
@@ -72,6 +76,7 @@ def main(args):
                 # print(query_prompt)
                 # check if the prompt is already in the database
                 if db.check_prompt_exists(query_prompt):
+                    print('.',end='')
                     continue
 
                 try:
