@@ -6,6 +6,7 @@ import re
 import random
 import psycopg
 from postgresAPI import PostgresAPI
+import numpy as np
 
 from datetime import datetime
 def main(args):
@@ -28,15 +29,22 @@ def main(args):
             if p['prompt'] not in prompt_counts:
                 prompt_counts[p['prompt']] = 0.0001
         # sample a least used prompt based on the inverse counts
-        least_used_prompt = random.choices(list(prompt_counts.keys()), weights=[1/prompt_counts[p] for p in prompt_counts], k=20)
+        p = [1/prompt_counts[p] for p in prompt_counts]
+        p = np.array(p)/sum(p)
+        least_used_prompt = np.random.choice(list(prompt_counts.keys()),5, p=p, replace=False)
+        
 
         #prompts = [{'prompt': 'person seen as [pers...SK] person', 'MASK_TYPE': 'perception', 'prompt_quality': 'good'},...]
-        # get the prompt with the least used prompt
-        try:
-            prompts = [p for p in prompts if p['prompt'] for l in least_used_prompt if p['prompt'] == l]
+        # get the prompt with the least used prompt'
+        prompts = [p for p in prompts if p['prompt'] for l in least_used_prompt if p['prompt'] == l]
+        
+        # for l in least_used_prompt:
+        #     for p in prompts:
+        #         if p['prompt'] == l:
+        #             prompts.append(p)
+
             
-        except:
-            continue
+
 
         
         for prompt in prompts:
@@ -49,10 +57,13 @@ def main(args):
             for entity_type in entities:
                 if entity_type not in entity:
                     # entity[entity_type] = sample_entity(db, entity_type)
-                    entity[entity_type] = db.get_limited_entities(entity_type, 5000)
+                    entity[entity_type] = random.sample(db.get_limited_entities(entity_type, 1000), 100)
                     
-            # sample entities:
+
+                    
+            # sample entities, could be empt:
             
+
             # print(entity)
             entity_sample = [[]]
             for entity_type in entities:
