@@ -409,6 +409,74 @@ CREATE INDEX IF NOT EXISTS examples_example_tail_type_idx
     ON public.examples_example USING btree
     (tail_type COLLATE pg_catalog."default" ASC NULLS LAST)
     TABLESPACE pg_default;
+
+"""
+
+
+"""
+-- Table: public.labels_category
+
+-- DROP TABLE IF EXISTS public.labels_category;
+
+CREATE TABLE IF NOT EXISTS public.labels_category
+(
+    id integer NOT NULL DEFAULT nextval('api_category_id_seq'::regclass),
+    prob double precision NOT NULL,
+    manual boolean NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
+    example_id integer NOT NULL,
+    label_id integer NOT NULL,
+    user_id integer NOT NULL,
+    uuid uuid NOT NULL,
+    CONSTRAINT api_category_pkey PRIMARY KEY (id),
+    CONSTRAINT api_category_example_id_user_id_label_id_25fc0052_uniq UNIQUE (example_id, user_id, label_id),
+    CONSTRAINT labels_category_uuid_7ce4d090_uniq UNIQUE (uuid),
+    CONSTRAINT api_category_example_id_2dbc87fd_fk_api_example_id FOREIGN KEY (example_id)
+        REFERENCES public.examples_example (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT api_category_label_id_40eb6a8e_fk_api_categorytype_id FOREIGN KEY (label_id)
+        REFERENCES public.label_types_categorytype (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT api_category_user_id_4a62861e_fk_auth_user_id FOREIGN KEY (user_id)
+        REFERENCES public.auth_user (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE INITIALLY DEFERRED
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.labels_category
+    OWNER to postgres;
+-- Index: api_category_example_id_2dbc87fd
+
+-- DROP INDEX IF EXISTS public.api_category_example_id_2dbc87fd;
+
+CREATE INDEX IF NOT EXISTS api_category_example_id_2dbc87fd
+    ON public.labels_category USING btree
+    (example_id ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: api_category_label_id_40eb6a8e
+
+-- DROP INDEX IF EXISTS public.api_category_label_id_40eb6a8e;
+
+CREATE INDEX IF NOT EXISTS api_category_label_id_40eb6a8e
+    ON public.labels_category USING btree
+    (label_id ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: api_category_user_id_4a62861e
+
+-- DROP INDEX IF EXISTS public.api_category_user_id_4a62861e;
+
+CREATE INDEX IF NOT EXISTS api_category_user_id_4a62861e
+    ON public.labels_category USING btree
+    (user_id ASC NULLS LAST)
+    TABLESPACE pg_default;
 """
 
 class PostgresAPI:
@@ -417,9 +485,8 @@ class PostgresAPI:
     
     def get_limited_entities(self, entity_type, limit):
         cur = self.conn.cursor()
-        # cur.execute("SELECT A.text FROM examples_example AS A JOIN labels_category AS B ON A.id=B.example_id JOIN label_types_categorytype AS C ON B.label_id = C.id")
-        # cur.execute("SELECT value FROM examples_example JOIN labels_category JOIN label_types_categorytype WHERE entity_type="+entity_type+" AND label_types_categorytype.text=Positive ORDER BY RANDOM() LIMIT "+str(limit))
-        cur.execute("SELECT text FROM examples_example WHERE id IN (SELECT example_id FROM labels_category WHERE label_id IN (SELECT id FROM label_types_categorytype WHERE entity_type = %s)) ORDER BY RANDOM() LIMIT %s", (entity_type, limit))
+        # SELECT text FROM examples_example JOIN labels_category ON examples_example.id=labels_category.example_id WHERE labels_category.label_id IN (SELECT id FROM label_types_categorytype WHERE label_types_categorytype.text = 'Positive') AND examples_example.entity_type = 'motivation';
+        cur.execute(f"SELECT text FROM examples_example JOIN labels_category ON examples_example.id=labels_category.example_id WHERE labels_category.label_id IN (SELECT id FROM label_types_categorytype WHERE label_types_categorytype.text = 'Positive') AND examples_example.entity_type = '{entity_type}' LIMIT {limit}")
         rows = cur.fetchall()
         print(rows)
         return [e[0] for e in rows]
