@@ -498,6 +498,13 @@ class PostgresAPI:
         rows = cur.fetchall()
         return len(rows) > 0
 
+    def prompt_counts(self):
+        # sample prompts
+        cur = self.conn.cursor()
+        cur.execute("SELECT prompt_template_text, count(prompt_template_text) FROM prompt_instance FULL JOIN prompt_template ON prompt_instance.prompt_template_id = prompt_template.id GROUP BY prompt_template_text ORDER BY COUNT(*)")
+        rows = cur.fetchall()
+        return {p[0]:p[1] for p in rows}
+
     def upsert_entity(self, entity_type, entity, prompt_template, prompt_instance):
         cur = self.conn.cursor()
         # get prompt template id
