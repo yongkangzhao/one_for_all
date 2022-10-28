@@ -19,7 +19,10 @@ def main(args):
     print("loading model")
     prober = T5Probe(model_name_or_path="t5-large")
     print("model loaded")
+    iteration = 0
     while True:
+        iteration += 1
+        print("\nIteration:", iteration)
         # get the least used prompt
         prompts = json.load(open(args.prompt_path, "r"))
         prompt_counts = db.prompt_counts()
@@ -57,12 +60,12 @@ def main(args):
             for entity_type in entities:
                 if entity_type not in entity:
                     # entity[entity_type] = sample_entity(db, entity_type)
-                    entity[entity_type] = random.sample(db.get_limited_entities(entity_type, 1000), 100)
+                    entities_samples = db.get_limited_entities(entity_type, 200)
+                    random.shuffle(entities_samples)
+                    entity[entity_type] = entities_samples[:100]
                     
+            # sample entities:
 
-                    
-            # sample entities, could be empt:
-            
 
             # print(entity)
             entity_sample = [[]]
@@ -83,6 +86,7 @@ def main(args):
                 # print(query_prompt)
                 # check if the prompt is already in the database
                 if db.check_prompt_exists(query_prompt):
+                    print('.',end='')
                     continue
 
                 try:
@@ -90,9 +94,10 @@ def main(args):
                 except Exception as e:
                     print("Error: ", e)
                     continue
+                print("\n")
                 for token in tokens['values']:
                     db.upsert_entity(prompt['MASK_TYPE'], token['token'], prompt['prompt'], query_prompt)
-                    print("inserting:", "prompt:", prompt['prompt'], "entity type:", prompt['MASK_TYPE'], token['token'])
+                    print("inserting:", "prompt:", query_prompt, "entity type:", prompt['MASK_TYPE'], token['token'])
                 print("\n=====================================")
     
 
