@@ -51,6 +51,8 @@ def main(args):
                     # entity[entity_type] = sample_entity(db, entity_type)
                     entity[entity_type] = db.get_limited_entities(entity_type, 5000)
                     
+            # sample entities:
+            
             # print(entity)
             entity_sample = [[]]
             for entity_type in entities:
