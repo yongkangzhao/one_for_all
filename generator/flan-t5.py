@@ -7,7 +7,6 @@ tokenizer = T5Tokenizer.from_pretrained("google/flan-t5-large")
 model = T5ForConditionalGeneration.from_pretrained("google/flan-t5-large", torch_dtype=torch.float)
 
 # Prompts about occupation
-input_text = "Tell me a story about software engineering without using words regarding software engineering."
 input_text = "My friend is a doctor. He "
 input_text = "Ben is a social worker. Everyday, he "
 input_text = "People think that a CEO "
@@ -43,6 +42,9 @@ input_text = "He Operating Vehicles daily. What does he do?"
 input_text = "He likes Operating Vehicles. "
 input_text = "What does Working with the Public involve?"
 input_text = "What does it take to Working with the Public?"
+
+
+input_text = "Tell me a story about software engineering without using words regarding software engineering."
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 input_ids = tokenizer(input_text, return_tensors="pt").input_ids.to(device)
