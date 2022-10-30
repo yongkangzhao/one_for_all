@@ -508,7 +508,7 @@ class PostgresAPI:
         rows = cur.fetchall()
         return {p[0]:p[1] for p in rows}
 
-    def upsert_entity(self, entity_type, entity, prompt_template, prompt_instance):
+    def upsert_entity(self, entity_type, entity, prompt_template, prompt_instance, is_sentence=False):
         cur = self.conn.cursor()
         # get prompt template id
         cur.execute("SELECT id FROM prompt_template WHERE prompt_template_text=%s AND target_entity_type=%s", (prompt_template, entity_type))
@@ -531,7 +531,8 @@ class PostgresAPI:
         cur.execute("SELECT id FROM examples_example WHERE text=%s", (entity,))
         example_id = cur.fetchone()
         if example_id is None:
-            cur.execute("INSERT INTO examples_example (meta, filename, text, created_at, updated_at, project_id, uuid, upload_name, entity_type) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id", (json.dumps({}), entity, entity, datetime.datetime.now(), datetime.datetime.now(), 1, str(uuid.uuid4()), entity, entity_type))
+            proj_id = 2 if is_sentence else 1
+            cur.execute("INSERT INTO examples_example (meta, filename, text, created_at, updated_at, project_id, uuid, upload_name, entity_type) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id", (json.dumps({}), entity, entity, datetime.datetime.now(), datetime.datetime.now(), proj_id, str(uuid.uuid4()), entity, entity_type))
             example_id = cur.fetchone()[0]
         else:
             cur.execute("UPDATE examples_example SET updated_at=%s WHERE id=%s", (datetime.datetime.now(), example_id[0]))

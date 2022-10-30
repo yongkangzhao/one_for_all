@@ -17,7 +17,7 @@ def main(args):
     
     
     print("loading model")
-    prober = T5Probe(model_name_or_path="t5-large")
+    prober = T5Probe(model_name_or_path="google/flan-t5-large")
     print("model loaded")
     iteration = 0
     while True:
@@ -45,9 +45,6 @@ def main(args):
         #     for p in prompts:
         #         if p['prompt'] == l:
         #             prompts.append(p)
-
-            
-
 
         
         for prompt in prompts:
@@ -90,14 +87,14 @@ def main(args):
                     continue
 
                 try:
-                    tokens = prober(query_prompt, topk=20, max_new_tokens=50)
+                    tokens = prober.gen_sentence(query_prompt, topk=20, min_length=10)
                 except Exception as e:
                     print("Error: ", e)
                     continue
                 print("\n")
-                for token in tokens['values']:
-                    db.upsert_entity(prompt['MASK_TYPE'], token['token'], prompt['prompt'], query_prompt)
-                    print("inserting:", "prompt:", query_prompt, "entity type:", prompt['MASK_TYPE'], token['token'])
+                for token in tokens:
+                    db.upsert_entity(prompt['MASK_TYPE'], token, prompt['prompt'], query_prompt, is_sentence=True)
+                    print("inserting:", "prompt:", query_prompt, "entity type:", prompt['MASK_TYPE'], token)
                 print("\n=====================================")
     
 
@@ -109,7 +106,6 @@ def get_limited_entities(db, entity_type, query={}, limit=0):
     collection = db[entity_type]
     entity = list(collection.aggregate([{"$match":query},{"$sample": {"size": limit}}]))
     return [e['value'] for e in entity]
-
 
 
 if __name__ == "__main__":

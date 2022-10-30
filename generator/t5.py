@@ -9,8 +9,8 @@ class T5Probe:
     def __init__(self, model_name_or_path="t5-large"):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         # self.device = torch.device('cpu')
-        self.tokenizer = T5Tokenizer.from_pretrained(model_name_or_path,model_max_length=512)
-        self.model = T5ForConditionalGeneration.from_pretrained(model_name_or_path, )
+        self.tokenizer = T5Tokenizer.from_pretrained(model_name_or_path, model_max_length=512)
+        self.model = T5ForConditionalGeneration.from_pretrained(model_name_or_path, torch_dtype=torch.float)
         self.model.eval()
         self.model.to(self.device)
         self.model.model_max_length = 512
@@ -19,6 +19,20 @@ class T5Probe:
     def __call__(self, input_text: str, topk: int = 20, max_new_tokens: int = 10):
         formatted_lines, mappings = self.reformat_and_find_mappings([input_text])
         return self.get_top_predictions(formatted_lines, mappings, topk, max_new_tokens)[0]
+
+    def gen_sentence(self, input_text, topk=20, min_length=10):
+        input_ids = self.tokenizer(input_text, return_tensors="pt").input_ids.to(self.device)
+        outputs = self.model.generate(input_ids, max_new_tokens=80,
+                                                        num_beams=30,
+                                                        repetition_penalty=10.0,
+                                                        length_penalty=1.0,
+                                                        num_return_sequences=topk,
+                                                        min_length=min_length,
+                                                        num_beam_groups=15,
+                                                        diversity_penalty=15.0,
+                                                        early_stopping=True)
+        res = self.tokenizer.batch_decode(outputs, skip_special_tokens=True, clean_up_tokenization_spaces=True)
+        return res
 
     def process_input(self, input_content, numresults):
         lines = input_content.split('\n')
