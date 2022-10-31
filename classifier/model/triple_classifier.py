@@ -1,5 +1,6 @@
-from transformers import AutoTokenizer, AutoModel
+from transformers import AutoModel
 import torch
+from torch.utils import data
 import numpy as np
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report, confusion_matrix, roc_auc_score, precision_recall_curve
 scaler = torch.cuda.amp.GradScaler()
@@ -8,19 +9,17 @@ class TripleClassifier(torch.nn.Module):
     def __init__(self, device):
         super().__init__()
         self.device = device
-        self.tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
         self.model = AutoModel.from_pretrained("distilbert-base-uncased")
         self.fc1 = torch.nn.Linear(768, 768)
         self.fc2 = torch.nn.Linear(768, 2)
         self.softmax = torch.nn.Softmax(dim=1)
         self.relu = torch.nn.ReLU()
         
-    def forward(self, text):
-        token = self.tokenizer.encode(text, truncation=True, max_length=512, padding="max_length", return_tensors="pt")
-        token = token.to(self.device)
-        output = self.model(token)[0][:,0,:]
-        output = self.fc1(output)
-        output = self.relu(self.fc2(output))
+    def forward(self, tokens):
+        output = self.model(tokens)[0][:,0,:]
+        
+        output = self.relu(self.fc1(output))
+        output = self.fc2(output)
         output = self.softmax(output)
 
         return output
@@ -34,6 +33,9 @@ class TripleClassifier(torch.nn.Module):
     def train_model(self, training_dataset, validation_dataset, epochs, batch_size, optimizer, loss_fn):
         self.train()
         best_f1 = 0
+
+        training_dataset_iter = data.DataLoader(training_dataset, batch_size=batch_size, shuffle=True)
+
         for epoch in range(epochs):
             # for i in range(0, len(training_dataset), batch_size):
             #     optimizer.zero_grad()
@@ -49,15 +51,16 @@ class TripleClassifier(torch.nn.Module):
             #     scaler.update()
             #     if i % 100 == 0:
             #         print("Epoch: ", epoch, " Batch: ", i, " Loss: ", loss.item())
-            for i, batch in enumerate(training_dataset):
+            for i, batch in enumerate(training_dataset_iter):
                 optimizer.zero_grad()
                 with torch.cuda.amp.autocast(dtype=torch.float):
-                    output = self(batch["text"])
-                    loss = loss_fn(output, torch.tensor([batch["label"]]).to(self.device))
+                    output = self(batch["text"].squeeze(1).to(self.device))
+                    loss = loss_fn(output, batch["label"].to(self.device))
                 scaler.scale(loss).backward()
                 scaler.step(optimizer)
                 scaler.update()
-                print("Epoch: ", epoch, " Batch: ", i, " Loss: ", loss.item())
+                if i % 10 == 0:
+                    print("Epoch: ", epoch, " Batch: ", i, " Loss: ", loss.item())
                 
             
 
@@ -82,12 +85,13 @@ class TripleClassifier(torch.nn.Module):
         y_true = []
         y_pred = []
         y_score = []
-        for i in range(0, len(dataset), batch_size):
-            batch = dataset[i:i+batch_size]
-            for j in range(len(batch)):
-                y_true.append(batch.iloc[j]["label"])
-                y_pred.append(self.predict(batch.iloc[j]["text"]))
-                y_score.append(self(batch.iloc[j]["text"])[0][1].item())
+        dataset_iter = data.DataLoader(dataset, batch_size=batch_size, shuffle=False)
+        for i, batch in enumerate(dataset_iter):
+            output = self(batch["text"].squeeze(1).to(self.device))
+            y_true += batch["label"].tolist()
+            y_pred += output.argmax(dim=1).tolist()
+            y_score += output[:,1].tolist()
+        
         
 
         # print("F1 score: ", f1_score(y_true, y_pred))
@@ -104,9 +108,9 @@ class TripleClassifier(torch.nn.Module):
         
         for i in sorted(set(y_pred)):
             y_pred_new = [1 if x >= i else 0 for x in y_pred]
-            print("Threshold: ", i, " F1 score: ", f1_score(y_true, y_pred_new), " Precision: ", precision_score(y_true, y_pred_new), " Recall: ", recall_score(y_true, y_pred_new))
-            print("Classification report: \n", classification_report(y_true, y_pred_new))
-            print("Confusion matrix: \n", confusion_matrix(y_true, y_pred_new))
+            # print("Threshold: ", i, " F1 score: ", f1_score(y_true, y_pred_new), " Precision: ", precision_score(y_true, y_pred_new), " Recall: ", recall_score(y_true, y_pred_new))
+            # print("Classification report: \n", classification_report(y_true, y_pred_new))
+            # print("Confusion matrix: \n", confusion_matrix(y_true, y_pred_new))
 
         # find the best threshold for positive class with higher than 0.9 precision
         best_positive_threshold = 0
@@ -127,21 +131,19 @@ class TripleClassifier(torch.nn.Module):
                 break
         
         # use both thresholds as upper and lower bound, ignore the middle part and show the classification report
-        positives = y_pred > best_positive_threshold
-        negatives = y_pred < best_negative_threshold
-        null = np.logical_and(y_pred <= best_positive_threshold, y_pred >= best_negative_threshold)
-        y_pred_new = y_pred.copy()
+        positives = np.array(y_pred) >= best_positive_threshold
+        negatives = np.array(y_pred) <= best_negative_threshold
+        null = np.logical_or(np.array(y_pred) <= best_positive_threshold, np.array(y_pred) >= best_negative_threshold)
+        y_pred_new = np.array(y_pred.copy())
         y_pred_new[positives] = 1
         y_pred_new[negatives] = 0
-        y_pred_new[null] = 2
+        y_pred_new[~null] = 2
 
-        y_true_new = y_true.copy()
-        y_true_new[positives] = 1
-        y_true_new[negatives] = 0
-        y_true_new[null] = 2
+        y_true_new = np.array(y_true.copy())
+        y_true_new[~null] = 2
         
 
-        print("Classification report: \n", classification_report(y_true, y_pred_new))
+        print("Classification report: \n", classification_report(y_true_new, y_pred_new))
 
 
     

@@ -17,12 +17,12 @@ def train():
     model = TripleClassifier(device)
     model.to(device)
     # train model
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=0.001)
     # loss_fn = torch.nn.CrossEntropyLoss()
     loss_fn = FocalLoss(gamma=0.9999)
     
     print("Training model...")
-    model.train_model(train, valid, 5, 16, optimizer, loss_fn)
+    model.train_model(train, valid, 50, 16, optimizer, loss_fn)
     
 
     # test model
