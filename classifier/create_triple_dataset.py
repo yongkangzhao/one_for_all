@@ -38,10 +38,18 @@ def main(args):
     # Create a training set with the remaining data
     training_set = full_dataset
 
+
+    # rename label to integer
+    training_set['label'] = training_set['label'].replace({'Positive': 1, 'Negative': 0})
+    validation_set['label'] = validation_set['label'].replace({'Positive': 1, 'Negative': 0})
+    test_set['label'] = test_set['label'].replace({'Positive': 1, 'Negative': 0})
+
+    
     # save the datasets as csv files
     # create empty datasets if they don't exist
     if not os.path.exists(os.path.join(args.output, args.dataset)):
         os.makedirs(os.path.join(args.output, args.dataset))
+    
     
     training_set.to_csv(os.path.join(args.output, args.dataset, "training_set.csv"), index=False)
     validation_set.to_csv(os.path.join(args.output, args.dataset, "validation_set.csv"), index=False)

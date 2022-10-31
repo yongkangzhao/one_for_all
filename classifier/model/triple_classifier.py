@@ -1,0 +1,100 @@
+from transformers import AutoTokenizer, AutoModel
+import torch
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report, confusion_matrix, roc_auc_score, precision_recall_curve
+
+class TripleClassifier(torch.nn.Module):
+    def __init__(self, device):
+        super().__init__()
+        self.device = device
+        self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+        self.model = AutoModel.from_pretrained("bert-base-uncased")
+        self.fc1 = torch.nn.Linear(768, 768)
+        self.fc2 = torch.nn.Linear(768, 2)
+        self.softmax = torch.nn.Softmax(dim=1)
+        self.relu = torch.nn.ReLU()
+        
+    def forward(self, text):
+        token = self.tokenizer.encode(text, add_special_tokens=True, truncation=True, max_length=512, padding="max_length")
+        token = torch.tensor(token).unsqueeze(0)
+        token = token.to(self.device)
+        output = self.model(token)[0][:,0,:]
+        output = self.fc1(output)
+        output = self.relu(self.fc2(output))
+        output = self.softmax(output)
+
+        return output
+
+    def save(self, path):
+        torch.save(self.state_dict(), path)
+
+    def load(self, path):
+        self.load_state_dict(torch.load(path))
+    
+    def train_model(self, training_dataset, validation_dataset, epochs, batch_size, optimizer, loss_fn):
+        self.train()
+        for epoch in range(epochs):
+            for i in range(0, len(training_dataset), batch_size):
+                batch = training_dataset[i:i+batch_size]
+                optimizer.zero_grad()
+                loss = 0
+                for j in range(len(batch)):
+                    output = self(batch.iloc[j]["text"])
+                    loss += loss_fn(output, torch.tensor([batch.iloc[j]["label"]], dtype=torch.long).to(self.device))
+                loss.backward()
+                optimizer.step()
+            print("Epoch: ", epoch, " Loss: ", loss.item())
+            self.test(validation_dataset, batch_size)
+
+    def test(self, dataset, batch_size):
+        # f1 score
+        # precision
+        # recall
+        # accuracy
+        # roc curve
+        # pr curve
+        # classification report
+        # confusion matrix
+        self.eval()
+        y_true = []
+        y_pred = []
+        for i in range(0, len(dataset), batch_size):
+            batch = dataset[i:i+batch_size]
+            for j in range(len(batch)):
+                y_true.append(batch.iloc[j]["label"])
+                y_pred.append(self.predict(batch.iloc[j]["text"]))
+        
+
+        # print("F1 score: ", f1_score(y_true, y_pred))
+        # print("Precision: ", precision_score(y_true, y_pred))
+        # print("Recall: ", recall_score(y_true, y_pred))
+        # print("Accuracy: ", accuracy_score(y_true, y_pred))
+        # print("ROC AUC: ", roc_auc_score(y_true, y_pred))
+        # print("PR AUC: ", precision_recall_curve(y_true, y_pred))
+        print("Classification report: \n", classification_report(y_true, y_pred))
+        print("Confusion matrix: \n", confusion_matrix(y_true, y_pred))
+        return y_true, y_pred, f1_score(y_true, y_pred), precision_score(y_true, y_pred), recall_score(y_true, y_pred), accuracy_score(y_true, y_pred), confusion_matrix(y_true, y_pred), roc_auc_score(y_true, y_pred), precision_recall_curve(y_true, y_pred), classification_report(y_true, y_pred)
+
+    def threshold_tuning(self, y_true, y_pred):
+        for i in sorted(set(y_pred)):
+            y_pred_new = [1 if x >= i else 0 for x in y_pred]
+            print("Threshold: ", i, " F1 score: ", f1_score(y_true, y_pred_new), " Precision: ", precision_score(y_true, y_pred_new), " Recall: ", recall_score(y_true, y_pred_new))
+
+
+
+    
+    def predict(self, text, threshold=0.5):
+        self.eval()
+        output = self(text)
+        if output[0][0] >= threshold:
+            return 0
+        else:
+            return 1
+        
+
+    
+
+if __name__ == "__main__":
+    tripleClassifier = TripleClassifier()
+    prediction = tripleClassifier('money [SEP] entity_type: motivation [SEP] being [persona] is caused by the need of [MASK] and: "{ "count": 2, "being supporter is caused by the need of [MASK] and": { "money": { "count": 2 } } }"')
+    print(prediction)
+
