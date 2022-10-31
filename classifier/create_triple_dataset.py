@@ -59,6 +59,6 @@ if __name__ == "__main__":
     parser.add_argument("--password", type=str, default="postgres")
     parser.add_argument("--database", type=str, default="postgres")
     parser.add_argument("--dataset", type=str, default="triple")
-    parser.add_argument("--output", type=str, default="data/triple/")
+    parser.add_argument("--output", type=str, default="data")
     args = parser.parse_args()
     main(args)
