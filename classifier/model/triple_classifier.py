@@ -1,21 +1,22 @@
 from transformers import AutoTokenizer, AutoModel
 import torch
+import numpy as np
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report, confusion_matrix, roc_auc_score, precision_recall_curve
+scaler = torch.cuda.amp.GradScaler()
 
 class TripleClassifier(torch.nn.Module):
     def __init__(self, device):
         super().__init__()
         self.device = device
-        self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
-        self.model = AutoModel.from_pretrained("bert-base-uncased")
+        self.tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
+        self.model = AutoModel.from_pretrained("distilbert-base-uncased")
         self.fc1 = torch.nn.Linear(768, 768)
         self.fc2 = torch.nn.Linear(768, 2)
         self.softmax = torch.nn.Softmax(dim=1)
         self.relu = torch.nn.ReLU()
         
     def forward(self, text):
-        token = self.tokenizer.encode(text, add_special_tokens=True, truncation=True, max_length=512, padding="max_length")
-        token = torch.tensor(token).unsqueeze(0)
+        token = self.tokenizer.encode(text, truncation=True, max_length=512, padding="max_length", return_tensors="pt")
         token = token.to(self.device)
         output = self.model(token)[0][:,0,:]
         output = self.fc1(output)
@@ -32,18 +33,41 @@ class TripleClassifier(torch.nn.Module):
     
     def train_model(self, training_dataset, validation_dataset, epochs, batch_size, optimizer, loss_fn):
         self.train()
+        best_f1 = 0
         for epoch in range(epochs):
-            for i in range(0, len(training_dataset), batch_size):
-                batch = training_dataset[i:i+batch_size]
+            # for i in range(0, len(training_dataset), batch_size):
+            #     optimizer.zero_grad()
+            #     with torch.cuda.amp.autocast(dtype=torch.float):
+            #         batch = training_dataset[i:i+batch_size]
+                    
+            #         loss = 0
+            #         for j in range(len(batch)):
+            #             output = self(batch.iloc[j]["text"])
+            #             loss += loss_fn(output, torch.tensor([batch.iloc[j]["label"]]).to(self.device))
+            #     scaler.scale(loss).backward()
+            #     scaler.step(optimizer)
+            #     scaler.update()
+            #     if i % 100 == 0:
+            #         print("Epoch: ", epoch, " Batch: ", i, " Loss: ", loss.item())
+            for i, batch in enumerate(training_dataset):
                 optimizer.zero_grad()
-                loss = 0
-                for j in range(len(batch)):
-                    output = self(batch.iloc[j]["text"])
-                    loss += loss_fn(output, torch.tensor([batch.iloc[j]["label"]], dtype=torch.long).to(self.device))
-                loss.backward()
-                optimizer.step()
-            print("Epoch: ", epoch, " Loss: ", loss.item())
-            self.test(validation_dataset, batch_size)
+                with torch.cuda.amp.autocast(dtype=torch.float):
+                    output = self(batch["text"])
+                    loss = loss_fn(output, torch.tensor([batch["label"]]).to(self.device))
+                scaler.scale(loss).backward()
+                scaler.step(optimizer)
+                scaler.update()
+                print("Epoch: ", epoch, " Batch: ", i, " Loss: ", loss.item())
+                
+            
+
+            print("Validation set: ")
+            y_true, y_pred, f1_score, precision, recall, accuracy, confusion_matrix, roc_auc, pr_auc, classification_report = self.test(validation_dataset, batch_size)
+            print("F1 score: ", f1_score)
+            if f1_score > best_f1:
+                best_f1 = f1_score
+                self.save("model/triple_classifier.pt")
+                print("Model saved")
 
     def test(self, dataset, batch_size):
         # f1 score
@@ -57,11 +81,13 @@ class TripleClassifier(torch.nn.Module):
         self.eval()
         y_true = []
         y_pred = []
+        y_score = []
         for i in range(0, len(dataset), batch_size):
             batch = dataset[i:i+batch_size]
             for j in range(len(batch)):
                 y_true.append(batch.iloc[j]["label"])
                 y_pred.append(self.predict(batch.iloc[j]["text"]))
+                y_score.append(self(batch.iloc[j]["text"])[0][1].item())
         
 
         # print("F1 score: ", f1_score(y_true, y_pred))
@@ -72,13 +98,50 @@ class TripleClassifier(torch.nn.Module):
         # print("PR AUC: ", precision_recall_curve(y_true, y_pred))
         print("Classification report: \n", classification_report(y_true, y_pred))
         print("Confusion matrix: \n", confusion_matrix(y_true, y_pred))
-        return y_true, y_pred, f1_score(y_true, y_pred), precision_score(y_true, y_pred), recall_score(y_true, y_pred), accuracy_score(y_true, y_pred), confusion_matrix(y_true, y_pred), roc_auc_score(y_true, y_pred), precision_recall_curve(y_true, y_pred), classification_report(y_true, y_pred)
+        return y_true, y_score, f1_score(y_true, y_pred), precision_score(y_true, y_pred), recall_score(y_true, y_pred), accuracy_score(y_true, y_pred), confusion_matrix(y_true, y_pred), roc_auc_score(y_true, y_pred), precision_recall_curve(y_true, y_pred), classification_report(y_true, y_pred)
 
     def threshold_tuning(self, y_true, y_pred):
+        
         for i in sorted(set(y_pred)):
             y_pred_new = [1 if x >= i else 0 for x in y_pred]
             print("Threshold: ", i, " F1 score: ", f1_score(y_true, y_pred_new), " Precision: ", precision_score(y_true, y_pred_new), " Recall: ", recall_score(y_true, y_pred_new))
+            print("Classification report: \n", classification_report(y_true, y_pred_new))
+            print("Confusion matrix: \n", confusion_matrix(y_true, y_pred_new))
 
+        # find the best threshold for positive class with higher than 0.9 precision
+        best_positive_threshold = 0
+        for i in sorted(set(y_pred)):
+            y_pred_new = [1 if x >= i else 0 for x in y_pred]
+            if precision_score(y_true, y_pred_new) >= 0.9:
+                print("Best threshold: ", i)
+                best_positive_threshold = i
+                break
+        
+        # find the best threshold for negative class with higher than 0.9 precision
+        best_negative_threshold = 0
+        for i in sorted(set(y_pred), reverse=True):
+            y_pred_new = [1 if x >= i else 0 for x in y_pred]
+            if precision_score(y_true, y_pred_new) >= 0.9:
+                print("Best threshold: ", i)
+                best_negative_threshold = i
+                break
+        
+        # use both thresholds as upper and lower bound, ignore the middle part and show the classification report
+        positives = y_pred > best_positive_threshold
+        negatives = y_pred < best_negative_threshold
+        null = np.logical_and(y_pred <= best_positive_threshold, y_pred >= best_negative_threshold)
+        y_pred_new = y_pred.copy()
+        y_pred_new[positives] = 1
+        y_pred_new[negatives] = 0
+        y_pred_new[null] = 2
+
+        y_true_new = y_true.copy()
+        y_true_new[positives] = 1
+        y_true_new[negatives] = 0
+        y_true_new[null] = 2
+        
+
+        print("Classification report: \n", classification_report(y_true, y_pred_new))
 
 
     
