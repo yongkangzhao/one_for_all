@@ -3,6 +3,7 @@ import argparse
 import pandas as pd
 import sys
 import os
+import json
 
 def main(args):
     # Create a postgresAPI object
@@ -44,7 +45,11 @@ def main(args):
     validation_set['label'] = validation_set['label'].replace({'Positive': 1, 'Negative': 0})
     test_set['label'] = test_set['label'].replace({'Positive': 1, 'Negative': 0})
 
-    
+    # cast to column meta to JSON string
+    training_set['meta'] = training_set['meta'].apply(lambda x: json.dumps(x))
+    validation_set['meta'] = validation_set['meta'].apply(lambda x: json.dumps(x))
+    test_set['meta'] = test_set['meta'].apply(lambda x: json.dumps(x))
+
     # save the datasets as csv files
     # create empty datasets if they don't exist
     if not os.path.exists(os.path.join(args.output, args.dataset)):

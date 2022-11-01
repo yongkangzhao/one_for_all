@@ -20,10 +20,10 @@ class FocalLoss(nn.Module):
         if self.class_weight:
             weights = torch.tensor(list(map(lambda x:self.class_weight[int(x)], target)), device = target.device)
         
-        targets = torch.zeros_like(input)
-        targets[range(len(input)), target] = 1
+        # targets = torch.zeros_like(input)
+        # targets[range(len(input)), target] = 1
 
-        bce_l = self.bceloss(input, targets)
+        bce_l = self.bceloss(input, target)
         bce_l = bce_l * weights
         pt = torch.clamp(torch.exp(-bce_l), min=1e-6, max=1-1e-6)
         loss = (torch.pow(1-pt, self.gamma) * bce_l).sum()
