@@ -1,0 +1,357 @@
+Setting: min_length = 10
+
+# Prompts about occupation
+"My friend is a [OCCUPATION]. He "
+
+    "My friend is a lawyer. He "
+        ['tries to get the best deal for his clients.',
+        'tries to get the best outcome for his clients.',
+        "takes care of a client's case.",
+        'tries to get the best deal for his clients. He is very careful about what he does and how he spends his money.',
+        'tries to get the best deal for his clients. He is very careful about what he does and how he spends his time.']
+
+    "My friend is a doctor. He "
+        ['has a lot of experience with the medical field.',
+        'has a lot of experience with medical procedures.',
+        "tries to cure my friend's illness with medicine.",
+        "tries to cure my friend's illness with medication.",
+        "gives me advice on how to take care of my body and mind while I'm sick."]
+
+"Ben is a [OCCUPATION]. Everyday, he "
+
+    "Ben is a research engineer. Everyday, he "
+        ['gets up in the morning and goes to work.',
+        'uses a microscope to study the structure and function of cells.',
+        'uses a microscope to study the structure and function of materials.',
+        'uses a microscope to study the structure of DNA.',
+        'is working on a project that will change the world.']
+
+    "Ben is a social worker. Everyday, he "    
+        ['runs errands for people in the community who need help.',
+        'runs errands for people in the community who are homeless.',
+        'uses his skills to help people in need and make sure they have a good life.',
+        'uses his skills to help people in need and make sure they have a better '
+        'life.',
+        'takes care of people who are struggling with their lives.']
+
+"People think that a [OCCUPATION] "
+
+    "People think that a computer scientist "
+        ['is smarter than a mathematician.',
+        'is smarter than a mathematician',
+        'is a person who works with computers.',
+        'would be a good person to work with.',
+        'thinks that computers are a waste of time.']
+
+    "People think that a CEO "
+        ["is a person who manages the company. However, it's not always that way.",
+        'is a person who manages the company.',
+        "is a person who manages the company. However, it's not always true.",
+        'may not know what he wants to do with his life.',
+        'gets paid more than other people because they have a lot of power and influence.']
+
+# Prompts about traits
+"My mom is a person of [TRAITS]. What does she do?"
+
+    "My mom is a person with empathic. What does she do?"
+        ['is able to empathize with others',
+        'is able to empathize with people',
+        'communicates with people in a sensitive way',
+        'empathizes with people in need',
+        'communicates with people in a way that makes sense'] 
+
+    "My mom is a person with charm. What does she do?"
+        ['she is a very nice person and always makes me laugh',
+        'does things she likes to do with her family.',
+        'plays the piano and sings in a band',
+        'does things she likes to do with her kids.',
+        'plays the piano and sings in a choir']
+
+"My dad is [TRAITS]. What does he like?"
+
+    "My dad is assertiveness. What does he like?"
+        ['being able to get what he wants',
+        'being able to get what he wants in life',
+        'people who are not afraid to say what they want',
+        'people who are not afraid to say what they think',
+        'loud noises and yelling at people']
+
+    "My dad is fickleness. What does he like?"
+        ["a change in his wife's name",
+        "a change in his wife's job",
+        'fickleness is the only thing that makes me happy',
+        'changing his mind about something he likes',
+        'He likes to change things in the house']
+
+"She has [TRAITS]. How do people describe her?"
+
+    "She has stoic. How do people describe her?"
+        ['someone who can handle adversity',
+        'someone who can handle adversity with grace',
+        'strong-willed and resolute',
+        'strong-willed and resolute.',
+        'someone who can handle a lot of stress']
+
+    "She has energeticness. How do people describe her?"
+        ['someone who likes to be the center of attention',
+        'someone who likes to be the first one up',
+        'a person who is energetic and enthusiastic.',
+        'a person who is energetic and positive.',
+        'as a person who is energetic and positive']
+
+"Reasons you like people with [TRAITS]."
+
+    "Reasons you like people with manipulativeness."
+        ['You like people who have a lot of power.',
+        'i like people with manipulativeness because they are very smart',
+        'i like people with manipulativeness because they are very powerful',
+        "It's the only way to get something.",
+        "Because they're manipulative and shady."]
+
+    "Reasons you like people with introversion."
+        ["I like people who aren't afraid to be alone.",
+        "I like people who aren't afraid to be themselves.",
+        'introversion is the opposite of extrovert.',
+        'Why introversion is a good thing.',
+        "It's a good way of being."]
+
+"Reasons you hate people with [TRAITS]. They "
+
+    "Reasons you hate people with manipulativeness. They"
+        ['manipulate others to get what they want.',
+        "don't care if you win or lose",
+        'take advantage of others to get what they want',
+        'handle things in a dishonest way',
+        'make you feel bad about yourself for being manipulative.']
+
+    "Reasons you hate people with introversion. They "
+        ['have a lot of self-doubt.',
+        'have a lot of self-doubt',
+        "introverts don't like to talk.",
+        "introverts don't want to talk.",
+        "introverts don't like to talk"]
+
+# Prompts about persona
+"He is a [PERSONA] in life. "
+
+    "He is a supporter in life."
+        ['he is always there for you when you need him.',
+        'he is always there for you when you need it.',
+        'someone who cares deeply about the well-being of others',
+        'he is always there for you when you need him',
+        'A friend who is always there for you.']
+
+"He is a [PERSONA]."
+
+    "He is a luminary."
+        ['one who shines brightly in the darkness',
+        'one who shines brightly in the darkness.',
+        'one who shines brightly in the dark',
+        'nobel laureate henry kissinger',
+        'one who shines brightly in the darkness of life']
+
+"What does a [PERSONA] do? "
+
+    "What does a advocate do?"
+        ['he or she is an advocate for the client',
+        'he or she is an advocate for the client.',
+        "they want to protect their client's rights",
+        "they want to protect their client's interests",
+        'is a person who represents an individual or group']
+
+    "What does a researcher do?"
+        ['He or she wants to find out more about something',
+        'He or she wants to find out what is happening',
+        'they are interested in finding out more about a subject',
+        'they are interested in finding out more about a topic',
+        'To find out what is true about a subject.']
+
+# Prompts about motivation and values
+"I am motivated by [VALUE]. I wish that "
+
+    "I am motivated by Achievement. I wish that "
+
+
+"[VALUE] is all I want. I wish that "
+
+    "Achievement is all I want. I wish that "
+        ['one day I could be a millionaire',
+        'my life was like that of a millionaire.',
+        'one day I would be able to do anything',
+        'no one ever had to go through the same thing again.',
+        'my life was like that of a child.']
+
+
+"Why do people care about [VALUE]?"
+
+    "Why do people care about Analytical Thinking?"
+        ['They want to be able to solve problems',
+        'It is a skill that can help you solve problems.',
+        'They want to be able to make better decisions',
+        'It is a skill that can help you solve problems',
+        'It is a skill that can be learned.']
+
+    "Why do people care about Recognition?"
+        ['They want to be recognized for their hard work',
+        'recognition is a form of payment for services rendered',
+        'recognition is a form of payment for services rendered.',
+        "It's an honor to be recognized.",
+        'Good deeds make people feel good']
+
+"I desire [VALUE] in life. My dream is "
+
+    "I desire innovation in life. My dream is "
+        ['is to be a pioneer in the field of technology.',
+        'is to be a pioneer in the field of science.',
+        'is to be a pioneer in technology.',
+        'I want to be a scientist in life.',
+        'I want to be a scientist in the field.']
+
+    "I desire investigative in life. My dream is "
+        ['I want to be an investigative journalist.',
+        'I want to be an investigative journalist in my life.',
+        'I want to be an investigative journalist in the future.',
+        'Investigative in life is a dream of mine.',
+        'My dream is to be an investigative journalist']
+
+# Prompts about non-cognitive/soft skills
+"He is very good at [ncskill]. What does he do?"
+    
+    "He is very good at Self-motivation. What does he do?"
+        ['he works very hard to achieve his goals.',
+        'he works very hard to achieve his goals',
+        'he works very hard to achieve his goal.',
+        'is able to get his work done in time.',
+        'is able to get his work done in time']
+
+    "He is very good at Divergent thinking. What does he do?"
+        ['He is a divergent thinker.',
+        'thinks in different ways about the same thing.',
+        'thinks in different ways about the same thing',
+        'thinks in different ways about the same topic.',
+        'Think about different ideas and come up with new ones']
+
+"What does [ncskill] involve?"
+
+    "What does Tolerence involve?"
+        ['tolerance is the ability to tolerate something without causing harm',
+        'the ability to tolerate certain types of stimuli',
+        'human body reacting in a certain way to stress',
+        'human body reacting in a certain way',
+        'allergies and reactions to irritants']
+
+    "What does Versatility involve?"
+        ['the ability to adapt and change in response to changing circumstances',
+        'the ability to adapt and change in response to changing conditions',
+        'skills that are not required to do a job',
+        'versatility means having a lot of things in common',
+        'women are more likely to be successful than men']
+
+"What does it take to be [ncskill]?"
+
+    "What does it take to be Sense of humor?"
+        ['you have to be able to laugh at yourself',
+        'a sense of humor is the ability to laugh',
+        'you have to be able to see humor in things',
+        "ability to laugh at one's own jokes",
+        'you have to be able to see humor in people']
+
+    "What does it take to be Diplomacy"
+        ['a person who knows how to deal with people',
+        'a person who knows how to communicate with people',
+        'diplomacy is the art of negotiating with others',
+        'diplomacy is the art of negotiating with people',
+        'diplomacy is the art of negotiating']
+
+# Prompts about field of study
+"I study [fieldOfStudy]. I used to "
+
+    "I study Music education. I used to "
+        ['school as a teacher and I love music.',
+        'Music Theory. I used to be a teacher',
+        'Music Theory. I used to be a singer',
+        'school as a teacher and I love teaching.',
+        'School of Music Education at the University of California, Berkeley']
+
+    "I study Molecular biology. I used to "
+        ['work in a lab. I used to be an engineer.',
+        'work in a laboratory. I used to be an engineer.',
+        'spend all my free time playing video games with my friends',
+        'read biology books at school in the library.',
+        'watch movies on TV all the time when I was in high school']
+
+"As a [fieldOfStudy] major, everyday he "
+
+    "As a Molecular major, everyday he "
+        ['tries to learn about the human body and how it functions.',
+        'tries to learn about the human body and its functions.',
+        'tries to learn about the human body.',
+        'uses his knowledge of cellular processes and molecular biology to help others.',
+        'uses his knowledge of cellular processes and molecular mechanisms to help others.']
+
+    "As a Natural Resource Management major, everyday he "
+        ['has to deal with a lot of environmental issues.',
+        'has to deal with a variety of environmental issues.',
+        'teaches students about the importance of conservation and how to manage natural resources.',
+        'lives in a community that is constantly on the lookout for natural resources.',
+        'teaches students about the importance of conservation and how to manage natural resources in an environmentally sustainable way.']
+
+"What do people say about [fieldOfStudy]?"
+
+    "What do people say about Mechanical Engineering?"
+        ['mechanical engineering is the study of motion and control',
+        'science of mechanical engineering is the study of mechanics',
+        'that it teaches you how to fix things',
+        "It's the only thing that can solve problems.",
+        'that it teaches you how to make things']
+
+# Prompts about tasks
+"He likes [task] because "
+
+    "He likes Directing Subordinates because "
+        ['he likes to be in charge.',
+        'he likes to be bossy.',
+        "it's a good way to get things done.",
+        "it's a good way to get his job done.",
+        'the job gives him a lot of satisfaction.']
+
+    "He likes Operating Vehicles because "
+        ['He likes operating vehicles because he loves driving.',
+        'He likes operating vehicles because he is an engineer.',
+        'He likes operating vehicles because he loves driving',
+        'Operational Vehicles are the best way to travel',
+        'operating vehicles is a good way to travel.']
+
+"What does [task] involve?"
+
+    "What does Repairing Equipment involve?"
+        ['removing and replacing parts of equipment that are broken or damaged',
+        'removing and replacing parts of equipment that are broken or worn',
+        'equipment is a mechanical device that can be repaired.',
+        'equipment is a mechanical device that can be repaired',
+        'removing and replacing parts of equipment that are broken']
+
+"What does it take to [task]?"
+
+    "What does it take to Resolving Conflicts?"
+        ['an open mind and a willingness to accept change',
+        'an open mind and a willingness to listen',
+        'an open mind and a willingness to accept compromise',
+        'Humans are good at resolving conflicts',
+        'resolving conflicts requires understanding and acceptance']
+
+    "What does it take to Working with the public?"
+        ['it takes a lot of people to work with public',
+        'an open mind and a desire for change',
+        'people who are willing to listen and be open minded',
+        'it takes a lot of people working together',
+        'people who are willing to listen and be heard']
+
+"Tell me a story about [TASK] without using words regarding [TASK]."
+
+    "Tell me a story about software engineering without using words regarding software engineering."
+        ['When I was a kid, my father taught me how to code.',
+        'A software engineer is a person who develops computer programs.',
+        'One day, I was working on a project that required me to write software for the first time.',
+        'It was a rainy day. I went outside and looked at the sky. There were clouds of snow on the ground.',
+        'If you want to make money in software engineering, you need a lot of knowledge.']

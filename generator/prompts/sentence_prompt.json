@@ -1,0 +1,6 @@
+[
+    {
+        "prompt": "My friend is a [occupation]. He ", 
+        "MASK_TYPE": "occupation"
+    }
+]
