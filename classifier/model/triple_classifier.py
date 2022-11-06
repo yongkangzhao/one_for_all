@@ -42,6 +42,7 @@ class TripleClassifier(torch.nn.Module):
 
         training_dataset_iter = data.DataLoader(training_dataset, batch_size=batch_size, num_workers=4, sampler=StratifiedBatchSampler(torch.tensor(training_dataset.dataset['label']), batch_size=batch_size))
 
+        count = 0
         for epoch in range(epochs):
             self.train()
             for i, batch in enumerate(training_dataset_iter):
@@ -55,12 +56,24 @@ class TripleClassifier(torch.nn.Module):
                 if i % 10 == 0:
                     print("Epoch: ", epoch, " Batch: ", i, " Loss: ", loss.item())
             print("Validation set: ")
-            y_true, y_pred, f1_score, precision, recall, accuracy, confusion_matrix, roc_auc, pr_auc, classification_report = self.test(validation_dataset, batch_size)
+            f1_score = self.test(validation_dataset, batch_size)
             print("F1 score: ", f1_score)
             if f1_score > best_f1:
                 best_f1 = f1_score
                 self.save("model/triple_classifier.pt")
                 print("Model saved")
+                count = 0
+            else:
+                count += 1
+                if count == 5:
+                    # lower learning rate
+                    for param_group in optimizer.param_groups:
+                        param_group['lr'] = param_group['lr'] / 2
+                    count = 0
+                    print("Learning rate lowered")
+                if count == 10:
+                    print("Early stopping after 10 epochs without improvement")
+                    break
 
     def test(self, dataset, batch_size):
         # f1 score
@@ -95,7 +108,7 @@ class TripleClassifier(torch.nn.Module):
         print("Threshold: ", threshold)
         print("Classification report: \n", classification_report(y_true, y_pred))
         print("Confusion matrix: \n", confusion_matrix(y_true, y_pred))
-        return y_true, y_score, f1_score(y_true, y_pred, average='macro'), precision_score(y_true, y_pred), recall_score(y_true, y_pred), accuracy_score(y_true, y_pred), confusion_matrix(y_true, y_pred), roc_auc_score(y_true, y_pred), precision_recall_curve(y_true, y_pred), classification_report(y_true, y_pred)
+        return f1_score(y_true, y_pred)
 
     def threshold_tuning(self, y_true, y_pred):
         # maximize f1 score
@@ -110,13 +123,14 @@ class TripleClassifier(torch.nn.Module):
         return best_threshold
 
     
-    def predict(self, text, threshold=0.5):
+    def predict(self, text, upper, lower):
         self.eval()
-        output = self(text)
-        if output[0][0] >= threshold:
-            return 0
-        else:
-            return 1
+        y_pred = self(text)
+        y_hat = np.array(y_pred)
+        y_hat[y_hat >= upper] = 1
+        y_hat[y_hat <= lower] = 0
+        y_hat[(y_hat > 0) & (y_hat < 1)] = 2
+        return y_hat
 
 class StratifiedBatchSampler:
     """Stratified batch sampling
