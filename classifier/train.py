@@ -70,8 +70,7 @@ def threshold_tuning(y_true, y_pred, metrics, precision_target, **kwargs):
     best_score = 0
     best_threshold = 0
     for threshold in sorted(y_pred, reverse=False):
-        
-        y_hat = [1 if score >= threshold else 0 for score in y_pred]
+        y_hat = (y_pred >= threshold) * 1
         score = metrics(y_true, y_hat, **kwargs)
         # print("positive: ","threshold: ", threshold, "score: ", score)
         if score > best_score:
@@ -91,9 +90,9 @@ def threshold_tuning(y_true, y_pred, metrics, precision_target, **kwargs):
     best_score = 0
     best_threshold = 0
     for threshold in sorted(y_pred, reverse=False):
-        y_hat = [1 if score >= threshold else 0 for score in y_pred]
+        y_hat = (y_pred >= threshold) * 1
         score = metrics(y_true, y_hat, **kwargs)
-        # print("negative: ","threshold: ", 1-threshold, "score: ", score)
+        # print("negative: ","threshold: ", threshold, "score: ", score)
         if score > best_score:
             best_score = score
             best_threshold = threshold
@@ -105,7 +104,7 @@ def threshold_tuning(y_true, y_pred, metrics, precision_target, **kwargs):
         best_threshold = 0
     lower = best_threshold
 
-    return upper, lower
+    return upper, 1-lower
 
 def classsification_report_with_threshold(y_true, y_pred, upper, lower):
     y_true = np.array(y_true)
@@ -123,6 +122,7 @@ if __name__ == "__main__":
     parser.add_argument("--batch_size", type=int, default=8)
     parser.add_argument("--learning_rate", type=float, default=1e-5)
     parser.add_argument("--precision_target", type=float, default=0.95)
+    parser.add_argument("--train", type=int, default=1)
     
     args = parser.parse_args()
 
@@ -132,9 +132,13 @@ if __name__ == "__main__":
     batch_size = args.batch_size
     learning_rate = args.learning_rate
     precision_target = args.precision_target
-
-    print("Building model...")
-    model = train(tokenizer_name=model_name, model_name=model_name, epochs=args.epochs, batch_size=args.batch_size, learning_rate=args.learning_rate)
+    if args.train:
+        print("Building model...")
+        model = train(tokenizer_name=model_name, model_name=model_name, epochs=args.epochs, batch_size=args.batch_size, learning_rate=args.learning_rate)
+    else:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        model = TripleClassifier(device, model_name=model_name)
+        model.load("model/"+model_name+"_triple_classifier.pt")
     print("Validating model...")
     y_true, y_pred = validate(tokenizer_name=model_name, model=model, dataset_path = 'data/triple/validation_set.csv', batch_size=args.batch_size)
     print("Tuning threshold...")
@@ -146,8 +150,9 @@ if __name__ == "__main__":
     y_true, y_pred = validate(tokenizer_name=model_name, model=model, dataset_path = 'data/triple/test_set.csv', batch_size=args.batch_size)
     print("Classification report with threshold applied on test set: ")
     classsification_report_with_threshold(y_true, y_pred, upper, lower)
-    print("saving model...")
-    model.save("model/"+model_name+"_triple_classifier.pt")
+    if args.train:
+        print("saving model...")
+        model.save("model/"+model_name+"_triple_classifier.pt")
     print("saving threshold...")
     with open("model/"+model_name+"_threshold_triple_classifier.txt", "w") as f:
         f.write(str(upper) + "\n")

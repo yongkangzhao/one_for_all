@@ -19,6 +19,7 @@ class TripleClassifier(torch.nn.Module):
         self.softmax = torch.nn.Softmax(dim=1)
         self.sigmoid = torch.nn.Sigmoid()
         self.relu = torch.nn.ReLU()
+        self.to(device)
         
     def forward(self, tokens):
         output = self.model(tokens)[0][:,0,:]
