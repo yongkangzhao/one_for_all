@@ -25,12 +25,15 @@ def main(args):
         print("\nIteration:", iteration)
         # get the least used prompt
         prompts = json.load(open(args.prompt_path, "r"))
-        prompt_counts = db.prompt_counts()
+        all_prompt_counts = db.prompt_counts()
+        # to get rid of triple prompts
+        prompt_counts = dict((prompt, all_prompt_counts.get(prompt, 0.0001)) for prompt in [item['prompt'] for item in prompts])
+
         # merge the used prompts with the prompts
         # {p['prompt']:p['count'] for p in used_prompts_counts}
-        for p in prompts:
-            if p['prompt'] not in prompt_counts:
-                prompt_counts[p['prompt']] = 0.0001
+        #for prompt in prompts:
+        #    if prompt['prompt'] not in prompt_counts:
+        #        prompt_counts[prompt['prompt']] = 0.0001
         # sample a least used prompt based on the inverse counts
         p = [1/prompt_counts[p] for p in prompt_counts]
         p = np.array(p)/sum(p)
@@ -79,7 +82,8 @@ def main(args):
                 query_prompt = prompt['prompt']
                 for entity_type, ent in query_sample:
                     query_prompt = query_prompt.replace('['+entity_type+']', ent, 1)
-                # prompt = prompt['prompt'].format(**entity)
+                    head = ent
+                  # prompt = prompt['prompt'].format(**entity)
                 # print(query_prompt)
                 # check if the prompt is already in the database
                 if db.check_prompt_exists(query_prompt):
@@ -93,7 +97,7 @@ def main(args):
                     continue
                 print("\n")
                 for token in tokens:
-                    db.upsert_entity(prompt['MASK_TYPE'], token, prompt['prompt'], query_prompt, is_sentence=True)
+                    db.upsert_entity(prompt['MASK_TYPE'], token, prompt['prompt'], query_prompt, is_sentence=True, head=head)
                     print("inserting:", "prompt:", query_prompt, "entity type:", prompt['MASK_TYPE'], token)
                 print("\n=====================================")
     

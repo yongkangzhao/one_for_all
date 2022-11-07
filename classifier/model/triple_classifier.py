@@ -19,6 +19,7 @@ class TripleClassifier(torch.nn.Module):
         self.softmax = torch.nn.Softmax(dim=1)
         self.sigmoid = torch.nn.Sigmoid()
         self.relu = torch.nn.ReLU()
+        self.to(device)
         
     def forward(self, tokens):
         output = self.model(tokens)[0][:,0,:]
@@ -69,7 +70,7 @@ class TripleClassifier(torch.nn.Module):
                     # lower learning rate
                     for param_group in optimizer.param_groups:
                         param_group['lr'] = param_group['lr'] / 2
-                    count = 0
+                    
                     print("Learning rate lowered")
                 if count == 10:
                     print("Early stopping after 10 epochs without improvement")
@@ -123,10 +124,10 @@ class TripleClassifier(torch.nn.Module):
         return best_threshold
 
     
-    def predict(self, text, upper, lower):
+    def predict(self, batch, upper, lower):
         self.eval()
-        y_pred = self(text)
-        y_hat = np.array(y_pred)
+        # cpu
+        y_hat = np.array(self(batch["text"].squeeze(1).to(self.device))[:,1].tolist())
         y_hat[y_hat >= upper] = 1
         y_hat[y_hat <= lower] = 0
         y_hat[(y_hat > 0) & (y_hat < 1)] = 2

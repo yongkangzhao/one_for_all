@@ -497,7 +497,7 @@ class PostgresAPI:
     def check_prompt_exists(self, prompt):
         # check if prompt exists
         cur = self.conn.cursor()
-        cur.execute(f"SELECT id FROM prompt_instance WHERE prompt_instance_text = '{prompt}'")
+        cur.execute("SELECT id FROM prompt_instance WHERE prompt_instance_text = %s", (prompt, ))
         rows = cur.fetchall()
         return len(rows) > 0
 
@@ -508,7 +508,7 @@ class PostgresAPI:
         rows = cur.fetchall()
         return {p[0]:p[1] for p in rows}
 
-    def upsert_entity(self, entity_type, entity, prompt_template, prompt_instance, is_sentence=False):
+    def upsert_entity(self, entity_type, entity, prompt_template, prompt_instance, is_sentence=False, head=''):
         cur = self.conn.cursor()
         # get prompt template id
         cur.execute("SELECT id FROM prompt_template WHERE prompt_template_text=%s AND target_entity_type=%s", (prompt_template, entity_type))
@@ -532,7 +532,7 @@ class PostgresAPI:
         example_id = cur.fetchone()
         if example_id is None:
             proj_id = 2 if is_sentence else 1
-            cur.execute("INSERT INTO examples_example (meta, filename, text, created_at, updated_at, project_id, uuid, upload_name, entity_type) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id", (json.dumps({}), entity, entity, datetime.datetime.now(), datetime.datetime.now(), proj_id, str(uuid.uuid4()), entity, entity_type))
+            cur.execute("INSERT INTO examples_example (meta, filename, text, created_at, updated_at, project_id, uuid, upload_name, entity_type, head) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id", (json.dumps({}), entity, entity, datetime.datetime.now(), datetime.datetime.now(), proj_id, str(uuid.uuid4()), entity, entity_type, head))
             example_id = cur.fetchone()[0]
         else:
             cur.execute("UPDATE examples_example SET updated_at=%s WHERE id=%s", (datetime.datetime.now(), example_id[0]))
@@ -556,6 +556,8 @@ class PostgresAPI:
         # transform to dict
         # template, template_count, instance, instance_count
         meta = {"entity_type": entity_type}
+        if is_sentence:
+            meta['head'] = head
         
         for e in data:
             if e[0] not in meta:
