@@ -70,7 +70,7 @@ class TripleClassifier(torch.nn.Module):
                     # lower learning rate
                     for param_group in optimizer.param_groups:
                         param_group['lr'] = param_group['lr'] / 2
-                    count = 0
+                    
                     print("Learning rate lowered")
                 if count == 10:
                     print("Early stopping after 10 epochs without improvement")

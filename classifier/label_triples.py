@@ -38,23 +38,26 @@ def main(args):
     model = load_model(args.model_name, device)
     upper, lower = load_threasold(args.model_name)
     done = False
-    samples = db.get_unlabeled_data("triple classification", args.batch_size)
-    ids = set()
-    for df in samples:
-        dataset = Dataset(df)
-        dataloader = data.DataLoader(dataset, batch_size=args.batch_size, shuffle=False)
-        for batch in dataloader:
-            label = model.predict(batch, upper, lower)
-            for i, label in zip(df['id'], label):
-                # check if id is already in ids
-                if i not in ids:
-                    ids.add(i)
-                else:
-                    print("id already in ids")
-                if label == 1:
-                    db.update_label(i, "Positive")
-                elif label == 0:
-                    db.update_label(i, "Negative")
+    while True:
+        # TODO: sample triples that are not labeled after certain date,
+        # TODO: keep track of the last date that we labeled
+        samples = db.get_unlabeled_data("triple classification", args.batch_size)
+        ids = set()
+        for df in samples:
+            dataset = Dataset(df)
+            dataloader = data.DataLoader(dataset, batch_size=args.batch_size, shuffle=False)
+            for batch in dataloader:
+                label = model.predict(batch, upper, lower)
+                for i, label in zip(df['id'], label):
+                    # check if id is already in ids
+                    if i not in ids:
+                        ids.add(i)
+                    else:
+                        print("id already in ids")
+                    if label == 1:
+                        db.update_label(i, "Positive")
+                    elif label == 0:
+                        db.update_label(i, "Negative")
             
 
 

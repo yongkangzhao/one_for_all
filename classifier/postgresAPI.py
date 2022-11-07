@@ -686,6 +686,8 @@ class PostgresAPI:
                 """
         query += "\nAND projects_project.name = '%s'"%(project_name)
         query += """\nAND NOT meta::jsonb ? 'seed'"""
+        #order desc
+        query += "\nORDER BY examples_example.id DESC"
         cur.execute(query)
         done = False
         while not done:

@@ -34,7 +34,7 @@ def main(args):
         # sample a least used prompt based on the inverse counts
         p = [1/prompt_counts[p] for p in prompt_counts]
         p = np.array(p)/sum(p)
-        least_used_prompt = np.random.choice(list(prompt_counts.keys()),5, p=p, replace=False)
+        least_used_prompt = np.random.choice(list(prompt_counts.keys()),25, p=p, replace=False)
         
 
         #prompts = [{'prompt': 'person seen as [pers...SK] person', 'MASK_TYPE': 'perception', 'prompt_quality': 'good'},...]
@@ -60,7 +60,7 @@ def main(args):
             for entity_type in entities:
                 if entity_type not in entity:
                     # entity[entity_type] = sample_entity(db, entity_type)
-                    entities_samples = db.get_limited_entities(entity_type, 200)
+                    entities_samples = db.get_limited_entities(entity_type, 500)
                     random.shuffle(entities_samples)
                     entity[entity_type] = entities_samples[:100]
                     
