@@ -2,5 +2,89 @@
     {
         "prompt": "My friend is a [occupation]. He ", 
         "MASK_TYPE": "occupation"
+    }, 
+    {
+        "prompt": "People think that a [occupation] ", 
+        "MASK_TYPE": "occupation"
+    }, 
+    {
+        "prompt": "My mom is a person of [traits]. What does she do? ", 
+        "MASK_TYPE": "traits"
+    }, 
+    {
+        "prompt": "My dad is [traits]. What does he like? ",
+        "MASK_TYPE": "traits"
+    },
+    {
+        "prompt": "She has [traits]. How do people describe her? ",
+        "MASK_TYPE": "traits"
+    },
+    {
+        "prompt": "Reasons you like people with [traits]. ", 
+        "MASK_TYPE": "traits"
+    },
+    {
+        "prompt": "Reasons you hate people with [TRAITS]. They ",
+        "MASK_TYPE": "traits"
+    },
+    {
+        "prompt": "He is a [persona] in life. ", 
+        "MASK_TYPE": "persona"
+    }, 
+    {
+        "prompt": "What does a [persona] do? ",
+        "MASK_TYPE": "persona"
+    },
+    {
+        "prompt": "I am motivated by [values]. I wish that ", 
+        "MASK_TYPE": "values"
+    }, 
+    {
+        "prompt": "[values] is all I want. I wish that ", 
+        "MASK_TYPE": "values"
+    }, 
+    {
+        "prompt": "Why do people care about [values]? ",
+        "MASK_TYPE": "values"
+    },
+    {
+        "prompt": "I desire [VALUE] in life. My dream is ",
+        "MASK_TYPE": "values"
+    },
+    {
+        "prompt": "He is very good at [ncskills]. What does he do? ",
+        "MASK_TYPE": "ncskills"
+    },
+    {
+        "prompt": "What does [ncskills] involve? ",
+        "MASK_TYPE": "ncskills"
+    }, 
+    {
+        "prompt": "What does it take to be [ncskills]? ",
+        "MASK_TYPE": "ncskills"
+    },
+    {
+        "prompt": "I study [fieldOfStudy]. I used to ",
+        "MASK_TYPE": "fieldOfStudy"
+    },
+    {
+        "prompt": "As a [fieldOfStudy] major, everyday he ",
+        "MASK_TYPE": "fieldOfStudy"
+    }, 
+    {
+        "prompt": "He likes [tasks] because ",
+        "MASK_TYPE": "tasks"
+    },
+    {
+        "prompt": "What does [tasks] involve? ",
+        "MASK_TYPE": "tasks"
+    },
+    {
+        "prompt": "What does it take to [tasks]? ",
+        "MASK_TYPE": "tasks"
+    },
+    {
+        "prompt": "Tell me a story about [tasks] without using words regarding [tasks]. ",
+        "MASK_TYPE": "tasks"
     }
 ]
