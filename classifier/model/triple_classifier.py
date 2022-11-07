@@ -124,10 +124,10 @@ class TripleClassifier(torch.nn.Module):
         return best_threshold
 
     
-    def predict(self, text, upper, lower):
+    def predict(self, batch, upper, lower):
         self.eval()
-        y_pred = self(text)
-        y_hat = np.array(y_pred)
+        # cpu
+        y_hat = np.array(self(batch["text"].squeeze(1).to(self.device))[:,1].tolist())
         y_hat[y_hat >= upper] = 1
         y_hat[y_hat <= lower] = 0
         y_hat[(y_hat > 0) & (y_hat < 1)] = 2

@@ -479,6 +479,71 @@ CREATE INDEX IF NOT EXISTS api_category_user_id_4a62861e
     (user_id ASC NULLS LAST)
     TABLESPACE pg_default;
 """
+"""
+-- Table: public.labels_category
+
+-- DROP TABLE IF EXISTS public.labels_category;
+
+CREATE TABLE IF NOT EXISTS public.labels_category
+(
+    id integer NOT NULL DEFAULT nextval('api_category_id_seq'::regclass),
+    prob double precision NOT NULL,
+    manual boolean NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
+    example_id integer NOT NULL,
+    label_id integer NOT NULL,
+    user_id integer NOT NULL,
+    uuid uuid NOT NULL,
+    CONSTRAINT api_category_pkey PRIMARY KEY (id),
+    CONSTRAINT api_category_example_id_user_id_label_id_25fc0052_uniq UNIQUE (example_id, user_id, label_id),
+    CONSTRAINT labels_category_uuid_7ce4d090_uniq UNIQUE (uuid),
+    CONSTRAINT api_category_example_id_2dbc87fd_fk_api_example_id FOREIGN KEY (example_id)
+        REFERENCES public.examples_example (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT api_category_label_id_40eb6a8e_fk_api_categorytype_id FOREIGN KEY (label_id)
+        REFERENCES public.label_types_categorytype (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT api_category_user_id_4a62861e_fk_auth_user_id FOREIGN KEY (user_id)
+        REFERENCES public.auth_user (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE INITIALLY DEFERRED
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.labels_category
+    OWNER to postgres;
+-- Index: api_category_example_id_2dbc87fd
+
+-- DROP INDEX IF EXISTS public.api_category_example_id_2dbc87fd;
+
+CREATE INDEX IF NOT EXISTS api_category_example_id_2dbc87fd
+    ON public.labels_category USING btree
+    (example_id ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: api_category_label_id_40eb6a8e
+
+-- DROP INDEX IF EXISTS public.api_category_label_id_40eb6a8e;
+
+CREATE INDEX IF NOT EXISTS api_category_label_id_40eb6a8e
+    ON public.labels_category USING btree
+    (label_id ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: api_category_user_id_4a62861e
+
+-- DROP INDEX IF EXISTS public.api_category_user_id_4a62861e;
+
+CREATE INDEX IF NOT EXISTS api_category_user_id_4a62861e
+    ON public.labels_category USING btree
+    (user_id ASC NULLS LAST)
+    TABLESPACE pg_default;
+"""
 
 class PostgresAPI:
     def __init__(self, dbname, user, password, host, port):
@@ -591,5 +656,43 @@ class PostgresAPI:
 
         # create dataframe
         df = pd.DataFrame(rows, columns=[desc[0] for desc in cur.description])
-
         return df
+
+    #db.update_label(i, "Negative")
+    def update_label(self, example_id, label_type):
+        cur = self.conn.cursor()
+        # get label id
+        cur.execute("SELECT id FROM label_types_categorytype WHERE text=%s", (label_type,))
+        label_type_id = cur.fetchone()
+        label_type_id = label_type_id[0]
+        # INSERT example label with label type
+        cur.execute("INSERT INTO labels_category (prob, manual, created_at, updated_at, example_id, label_id, user_id, uuid) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (1.0, True, datetime.datetime.now(), datetime.datetime.now(), example_id, label_type_id, 1, str(uuid.uuid4())))
+        # update example meta
+        
+        # commit
+        self.conn.commit()
+
+        
+    def get_unlabeled_data(self, project_name, batch_size=10):
+        cur = self.conn.cursor()
+        query = """
+                SELECT examples_example.id, text, meta
+                FROM examples_example
+                FULL JOIN labels_category
+                ON examples_example.id=labels_category.example_id
+                JOIN projects_project
+                ON projects_project.id = examples_example.project_id
+                WHERE label_id is null
+                """
+        query += "\nAND projects_project.name = '%s'"%(project_name)
+        query += """\nAND NOT meta::jsonb ? 'seed'"""
+        cur.execute(query)
+        done = False
+        while not done:
+            rows = cur.fetchmany(batch_size)
+            if len(rows) == 0:
+                done = True
+                continue
+            yield pd.DataFrame(rows, columns=[desc[0] for desc in cur.description])
+
+
