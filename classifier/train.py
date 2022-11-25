@@ -39,6 +39,7 @@ def validate(tokenizer_name, model, dataset_path, batch_size):
     dataset_iter = data.DataLoader(test, batch_size=batch_size, shuffle=False)
     for i, batch in enumerate(dataset_iter):
         output = model(batch["text"].squeeze(1).to(model.device))
+        output = torch.softmax(output, dim=1)
         y_true += batch["label"].tolist()
         y_pred += output.argmax(dim=1).tolist()
         y_score += output[:,1].tolist()

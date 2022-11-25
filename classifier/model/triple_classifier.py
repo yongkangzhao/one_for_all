@@ -1,5 +1,6 @@
 from transformers import AutoModel
 import torch
+import torch.nn as nn
 from torch.utils import data
 import numpy as np
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report, confusion_matrix, roc_auc_score, precision_recall_curve
@@ -27,7 +28,7 @@ class TripleClassifier(torch.nn.Module):
         output = self.relu(self.fc1(output))
         output = self.relu(self.fc2(output))
         output = self.fc3(output)
-        output = self.softmax(output)
+        # output = self.softmax(output)
 
         return output
 
@@ -92,6 +93,7 @@ class TripleClassifier(torch.nn.Module):
         dataset_iter = data.DataLoader(dataset, batch_size=batch_size, shuffle=False)
         for i, batch in enumerate(dataset_iter):
             output = self(batch["text"].squeeze(1).to(self.device))
+            output = nn.functional.softmax(output, dim=1)
             y_true += batch["label"].tolist()
             y_pred += output.argmax(dim=1).tolist()
             y_score += output[:,1].tolist()
@@ -127,7 +129,7 @@ class TripleClassifier(torch.nn.Module):
     def predict(self, batch, upper, lower):
         self.eval()
         # cpu
-        y_hat = np.array(self(batch["text"].squeeze(1).to(self.device))[:,1].tolist())
+        y_hat = np.array(nn.functional.softmax(self(batch["text"].squeeze(1).to(self.device)), dim=1).cpu().detach().numpy())[:,1]
         y_hat[y_hat >= upper] = 1
         y_hat[y_hat <= lower] = 0
         y_hat[(y_hat > 0) & (y_hat < 1)] = 2
