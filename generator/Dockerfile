@@ -16,4 +16,4 @@ RUN pip install flatten-dict
 # RUN conda install pytorch torchvision torchaudio cudatoolkit=11.6 -c pytorch -c conda-forge -y
 RUN pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116
 COPY . .
-ENTRYPOINT ["python", "generator.py"]
+CMD ["python", "generator.py"]
