@@ -1,0 +1,36 @@
+index,prompt,MASK_TYPE,head,relation,tail
+1,understanding of the [MASK] concept is fundamental before learning about [fieldOfStudy],concept,fieldOfStudy,fieldOfStudy_needs_concept,concept
+2,working in the [occupation] occupation requires knowledge of the [MASK] and  ,concept,occupation,occupation_needs_concept,concept
+3,with the understanding of the [concept] we can apply it in the field of [MASK] or,fieldOfStudy,concept,concept_is_related_to_fieldOfStudy,fieldOfStudy
+4,A [occupation] requires knowledge in [MASK] and  ,fieldOfStudy,occupation,occupation_has_fieldOfStudy,fieldOfStudy
+5,"People major in the [MASK] field are suitable for working in the [occupation] occupation, since ",fieldOfStudy,fieldOfStudy,fieldOfStudy_is_good_for_occupation,occupation
+6,courses involving lots of [concept] are often taken by students enrolled in the [MASK] department,fieldOfStudy,fieldOfStudy,fieldOfStudy_requires_concept,concept
+7,it is important to know how to do [skill] work to work as a [MASK] in the company,job,skill,skill_is_related_to_job,job
+8,understanding of how the [concept] works is required for working as the [MASK] in the company,job,concept,concept_is_related_to_job,job
+9,often people with the job title of [MASK] are often found in the [occupation] occupation ,job,job,job_is_related_to_occupation,occupation
+10,people working in the [occupation] occupation is often motivated by their need to [MASK] and ,motivation,occupation,occupation_motivated_by,motivation
+11,Planning budget requires carefulness skill; [tasks] requires [MASK] skill; Analyzing Data requires problem-solving skill;,ncskills,tasks,persona_has_ncskills,ncskills
+12,technician has good Analysis skill; [persona] has good [MASK] skill; mastermind has good Coordination skill;,ncskills,persona,persona_has_ncskills,ncskills
+13,"soft skills like the ability to [MASK], which is helpful when tasked to [tasks]",ncskills,ncskills,ncskills_are_helpful_for_task,tasks
+14,person with the [personality] type of personality is often seen as a [MASK] type of person,perception,personality,personality_is_seen_as_perception,perception
+15,People working in the [occupation] occupation are often described as [MASK] and  ,perception,occupation,occupation_is_perceived_as_perception,perception
+16,person seen as [perception] is perceived as a very [MASK] person,persona,persona,persona_is_perceived_as_perception,perception
+17,person with the [MASK] type of personality is often motivated to [motivation],personality,personality,personality_is_related_to_motivation,motivation
+18,person with a [MASK] personality is good to be working in the [occupation] occupation,personality,occupation,occupation_associates_with_personality,personality
+19,[occupation] occupation is stuitable for person that has a [MASK] type of personality,personality,personality,personality_associates_with_occupation,occupation
+20,courses involving lots of [MASK] are often taken by students enrolled in the [fieldOfStudy] department,skill,fieldOfStudy,fieldOfStudy_is_related_to_skill,skill
+21,[tasks] requires strong [MASK] skills to ,skill,tasks,tasks_needs_skill,skill
+22,"understanding of how [skill] works is a must before learning about other more advanced topics like [MASK], because",skill,skill,skill_is_related_to_skill,skill
+23,"understanding of how the [MASK] works is a must before learning about other more advanced topics like [skill], because",skill,skill,skill_is_related_to_skill,skill
+24,being able to [MASK] is neccessary to work as a [job],skill,job,job_need_to_do_skill,skill
+25,knowing how [MASK] works is essential to work as a [job],skill,job,job_need_understand_skill,skill
+26,people in the [MASK] occupation are often tasked to [MASK],tasks,occupation,occupation_is_related_to_task,tasks
+27,[occupation] occupation is stuitable for person that enjoys doing [MASK] and,tasks,tasks,tasks_associates_with_occupation,occupation
+28,"People with strong traits of [MASK] are suitable for working in the [occupation] occupation, since ",traits,occupation,occupation_need_traits,traits
+29,person seen as the [persona] is often motivated by their needs of the [MASK] and,motivation,persona,persona_motivated_by,motivation
+30,person working as the [job] is often motivated to [MASK] and,motivation,job,job_motivated_to,motivation
+31,accountant are perceived as meticulous; [job] are perceived as [MASK]; nurse are perceived as caring;,perception,job,job_perceived_as_perception,perception
+32,A hero is a brave person; A [persona] is a [MASK] person; A mastermind is a calculating person;,traits,persona,persona_has_traits,traits
+33,doing [tasks] makes themselves feel [MASK] and  ,feel,tasks,tasks_associates_with_feel,feel
+34,doing [tasks] make others feel [MASK] and  ,feel,tasks,tasks_makes_others_feel,feel
+35,Solving problems requires analytical skills; [tasks] requires [MASK] skills;,skill,tasks,tasks_requires_skill,skill

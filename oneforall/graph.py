@@ -1,6 +1,9 @@
 import argparse
 from postgresAPI import PostgresAPI
 import re
+import pandas as pd
+
+prompt_to_graph_df = pd.read_csv('prompt_to_graph.csv', index_col=0)
 
 def entity_extractor(prompt_template, prompt):
     entities = re.findall(r'\[.*?\]', prompt_template)
@@ -25,19 +28,25 @@ def get_triples(meta):
             extraction = entity_extractor(prompt_template, prompt)
             mask_entity = list(v.keys())[0]
 
-            # check if the extracted entity is before or after the mask
-            if prompt_template.find('[MASK]') < prompt_template.find(extraction['type']):
-                triples.append((meta['entity_type']+":"+mask_entity, meta['entity_type']+'_for', extraction['type'][1:-1]+":"+extraction['entity']))
-            else:
-                triples.append((extraction['type'][1:-1]+":"+extraction['entity'], 'has_'+meta['entity_type'], meta['entity_type']+":"+mask_entity))
+            # check the triple relation type
+            row = prompt_to_graph_df[prompt_to_graph_df['prompt'] == prompt_template]
+
+            mask_type = row['MASK_TYPE'].values[0]
+            head_type = row['head'].values[0]
+            relation = row['relation'].values[0]
+            tail_type = row['tail'].values[0]
+
+            # check the triple relation type
+            if extraction['type'][1:-1] == head_type and mask_type == tail_type:
+                subject = extraction['entity']
+                object = mask_entity
+            elif extraction['type'][1:-1] == tail_type and mask_type == head_type:
+                subject = mask_entity
+                object = extraction['entity']
+            
+            triples.append((subject, relation, object))
     return triples
-
-
-
-
-
-    return PostgresAPI().execute(sql)
-
+            
 
 
    
