@@ -658,6 +658,13 @@ class PostgresAPI:
         df = pd.DataFrame(rows, columns=[desc[0] for desc in cur.description])
         return df
 
+    def get_sentence_by_entity(self, entity_type, entity_name):
+        cur = self.conn.cursor()
+        query = "SELECT text FROM public.examples_example WHERE meta->>'entity_type' = '%s' AND meta->>'head' = '%s'"%(entity_type.replace("'","''"), entity_name.replace("'","''"))
+        cur.execute(query)
+        rows = cur.fetchall()
+        return rows
+
     #db.update_label(i, "Negative")
     def update_label(self, example_id, label_type):
         cur = self.conn.cursor()

@@ -2,6 +2,7 @@ import argparse
 from postgresAPI import PostgresAPI
 import re
 import pandas as pd
+from tqdm import tqdm
 
 prompt_to_graph_df = pd.read_csv('prompt_to_graph.csv', index_col=0)
 
@@ -16,8 +17,9 @@ def entity_extractor(prompt_template, prompt):
     return {'entity': extracted_entity, 'type': entity}
 
 
-def get_triples(meta):
+def get_triples(meta, db):
     # meta = {'entity_type': 'occupation', 'Occupation requiring [ncskills] skills: [MASK] and ': {'count': 12, 'Occupation requiring concentration skills: [MASK] and ': {'Accounting': {'count': 1}}, 'Occupation requiring problem solving skills: [MASK] and ': {'Accounting': {'count': 2}}, 'Occupation requiring computer literacy skills: [MASK] and ': {'Accounting': {'count': 1}}, 'Occupation requiring critical thinking skills: [MASK] and ': {'Accounting': {'count': 1}}, 'Occupation requiring computer knowledge skills: [MASK] and ': {'Accounting': {'count': 1}}, 'Occupation requiring in-depth knowledge skills: [MASK] and ': {'Accounting': {'count': 1}}, 'Occupation requiring specialized knowledge skills: [MASK] and ': {'Accounting': {'count': 1}}, 'Occupation requiring the ability to analyze skills: [MASK] and ': {'Accounting': {'count': 3}}, 'Occupation requiring high level of knowledge skills: [MASK] and ': {'Accounting': {'count': 1}}}}
+    cache = {}
     triples = []
     for prompt_template, value in meta.items():
         if prompt_template == 'entity_type':
@@ -44,7 +46,13 @@ def get_triples(meta):
                 subject = mask_entity
                 object = extraction['entity']
             
-            triples.append((subject, relation, object))
+            if head_type not in cache:
+                cache[head_type] = {}
+            if subject not in cache[head_type]:
+                cache[head_type][subject] = set(db.get_sentence_by_entity(head_type,subject))
+            for sentence in cache[head_type][subject]:
+                triples.append((sentence[0], relation, object))
+            # triples.append((subject, relation, object))
     return triples
             
 
@@ -54,11 +62,11 @@ def get_triples(meta):
 #dbname, user, password, host, port):
 def main(dbname, user, password, host, port):
     db = PostgresAPI(dbname, user, password, host, port)
-    samples = db.get_samples('triple classification', 'Positive', 10000)
+    samples = db.get_samples('triple classification', 'Positive')
     file = open('triples.txt', 'w')
-    for meta in samples['meta']:
+    for meta in tqdm(samples['meta']):
         # print(meta)
-        triples = get_triples(meta)
+        triples = get_triples(meta, db)
         for triple in triples:
             file.write(str(triple)+'\n')
     file.close()
@@ -78,5 +86,5 @@ if __name__ == '__main__':
     parser.add_argument('--host', type=str, default='localhost')
     parser.add_argument('--port', type=str, default='5432')
     args = parser.parse_args()
-    triples = main(args.dbname, args.user, args.password, args.host, args.port)
-    print(triples)
+    main(args.dbname, args.user, args.password, args.host, args.port)
+    

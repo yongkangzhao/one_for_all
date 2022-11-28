@@ -8,8 +8,7 @@ from transformers import PreTrainedTokenizer, T5ForConditionalGeneration, T5Toke
 from torch.utils.data import DataLoader
 import argparse
 
-from MyDataset import Dataset
-import MyDataset
+from dataset import Dataset, DatasetMap 
 
 import pandas as pd
 
@@ -198,8 +197,8 @@ if __name__ == '__main__':
 
 
 
-    train_set = Dataset(train_data, tokenizer, parser=MyDataset.DatasetMap.squad)
-    validation_set = Dataset(test_data, tokenizer, parser=MyDataset.DatasetMap.squad)
+    train_set = Dataset(train_data, tokenizer, parser=DatasetMap.squad)
+    validation_set = Dataset(test_data, tokenizer, parser=DatasetMap.squad)
 
     train(model=model,
           tokenizer=tokenizer,
