@@ -1,8 +1,8 @@
-from fastapi import FastAPI
 from generator import Oneforall
-app = FastAPI()
-
 oneforall = Oneforall("results/google/flan-t5-base/model/best-f1/", "results/google/flan-t5-base/tokenizer/best-f1/", "cuda")
+
+from fastapi import FastAPI
+app = FastAPI()
 
 
 @app.get("/generate/{question}/{context}")
