@@ -91,7 +91,7 @@ def main(args):
                     continue
 
                 try:
-                    tokens = prober.gen_sentence(query_prompt, topk=20, min_length=50)
+                    tokens = prober.gen_sentence(query_prompt, topk=10, min_length=50)
                 except Exception as e:
                     print("Error: ", e)
                     continue
