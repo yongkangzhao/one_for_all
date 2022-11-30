@@ -2,7 +2,7 @@ import argparse
 import torch
 import scipy
 import numpy as np
-
+import json
 from transformers import PreTrainedTokenizer, T5ForConditionalGeneration, T5Tokenizer, AdamW, set_seed
 
 
@@ -25,7 +25,7 @@ class Oneforall:
         # compute ranks of the outputs based on their counts if count is the same the rank is the same
         out = list(np.array(list(output_counts.keys()))[scipy.stats.rankdata(list(np.array(list(output_counts.values()))*-1), method="min") <= 5])
 
-        return out
+        return {context:out}
 
 
 
