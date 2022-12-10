@@ -23,13 +23,13 @@ class T5Probe:
     def gen_sentence(self, input_text, topk=20, min_length=10):
         input_ids = self.tokenizer(input_text, return_tensors="pt").input_ids.to(self.device)
         outputs = self.model.generate(input_ids, max_new_tokens=80,
-                                                        num_beams=30,
+                                                        num_beams=40,
                                                         repetition_penalty=10.0,
                                                         length_penalty=1.0,
                                                         num_return_sequences=topk,
                                                         min_length=min_length,
-                                                        num_beam_groups=15,
-                                                        diversity_penalty=15.0,
+                                                        num_beam_groups=20,
+                                                        diversity_penalty=55.0,
                                                         early_stopping=True)
         res = self.tokenizer.batch_decode(outputs, skip_special_tokens=True, clean_up_tokenization_spaces=True)
         return res

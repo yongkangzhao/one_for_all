@@ -1,167 +1,247 @@
 [
     {
-        "prompt": "person seen as [persona] is perceived as a [MASK] person",
-        "MASK_TYPE": "perception",
-        "prompt_quality": "good"
+        "prompt": "understanding of the [MASK] concept is fundamental before learning about [fieldOfStudy]",
+        "MASK_TYPE" :"concept",
+        "head":	"fieldOfStudy",
+        "relation":	"fieldOfStdy_needs_concept",
+        "tail":	"concept"
     },
     {
-        "prompt": "it is important to understand concept of [MASK] before thinking about [fieldOfStudy]",
-        "MASK_TYPE": "concept"
+        "prompt": "working in the [occupation] occupation requires knowledge of the [MASK] and  ",
+        "MASK_TYPE" :"concept",
+        "head":	"occupation",
+        "relation":	"occupation_needs_concept",
+        "tail":	"concept"
     },
     {
-        "prompt": "working as a [occupation] who is motivated by the need of [MASK] and ",
-        "MASK_TYPE": "motivation"
+        "prompt": "doing [tasks] makes themselves feel [MASK] and  ",
+        "MASK_TYPE" :"feel",
+        "head":	"tasks",
+        "relation":	"tasks_associates_with_feel",
+        "tail":	"feel"
     },
     {
-        "prompt": "working as a [MASK] who is motivated by the need of [motivation] and ",
-        "MASK_TYPE": "motivation"
+        "prompt": "doing [tasks] make others feel [MASK] and  ",
+        "MASK_TYPE" :"feel",
+        "head":	"tasks",
+        "relation":	"tasks_makes_others_feel",
+        "tail":	"feel"
     },
     {
-        "prompt": "becoming a [persona] who is motivated by the need of [MASK] and ",
-        "MASK_TYPE": "motivation"
+        "prompt": "with the understanding of the [concept] we can apply it in the field of [MASK] or",
+        "MASK_TYPE" :"fieldOfStudy",
+        "head": 	"concept",
+        "relation":	"concept_is_related_to_fieldOfStudy",
+        "tail":	"fieldOfStudy"
     },
     {
-        "prompt": "becoming a [MASK] who is motivated by the need of [motivation] and ",
-        "MASK_TYPE": "motivation"
+        "prompt": "People major in the [MASK] field are suitable for working in the [occupation] occupation, since ",
+        "MASK_TYPE" :"fieldOfStudy",
+        "head": 	"fieldOfStudy",
+        "relation":	"fieldOfStudy_is_good_for_occupation",
+        "tail":	"occupation"
     },
     {
-        "prompt": "becoming a [persona] is the result of being [MASK] and ",
-        "MASK_TYPE": "motivation"
+        "prompt": "courses involving lots of [concept] are often taken by students enrolled in the [MASK] department",
+        "MASK_TYPE" :"fieldOfStudy",
+        "head": 	"fieldOfStudy",
+        "relation":	"fieldOfStudy_requires_concept",
+        "tail":	"concept"
     },
     {
-        "prompt": "becoming a [MASK] is the result of being [persona] and ",
-        "MASK_TYPE": "motivation"
+        "prompt": "A [occupation] requires knowledge in [MASK] and  ",
+        "MASK_TYPE" :"fieldOfStudy",
+        "head": 	"occupation",
+        "relation":	"occupation_has_fieldOfStudy",
+        "tail": 	"fieldOfStudy" 
     },
     {
-        "prompt": "being [persona] is caused by the need of [MASK] and",
-        "MASK_TYPE": "motivation"
+        "prompt": "understanding of how the [concept] works is required for working as the [MASK] in the company",
+        "MASK_TYPE" :"job",
+        "head":	"concept",
+        "relation":	"concept_is_related_to_job",
+        "tail":	"job"
     },
     {
-        "prompt": "being [MASK] is caused by the need of [persona] and",
-        "MASK_TYPE": "motivation"
+        "prompt": "often people with the job title of [MASK] are often found in the [occupation] occupation ",
+        "MASK_TYPE" :"job",
+        "head":	"job",
+        "relation":	"job_is_related_to_occupation",
+        "tail":	"occupation"
     },
     {
-        "prompt": "being [persona] is caused by the need of [MASK] and",
-        "MASK_TYPE": "motivation"
+        "prompt": "it is important to know how to do [skill] work to work as a [MASK] in the company",
+        "MASK_TYPE" :"job",
+        "head":	"skill",
+        "relation":	"skill_is_related_to_job",
+        "tail":	"job"
     },
     {
-        "prompt": "being able to [MASK] is neccessary to work as a [occupation]",
-        "MASK_TYPE": "skill"
+        "prompt": "person working as the [job] is often motivated to [MASK] and",
+        "MASK_TYPE" :"motivation",
+        "head":	"job",
+        "relation":	"job_motivated_to",
+        "tail":	"motivation"
     },
     {
-        "prompt": "being able to [MASK] is essential to work as a [occupation]",
-        "MASK_TYPE": "skill"
+        "prompt": "people working in the [occupation] occupation is often motivated by their need to [MASK] and ",
+        "MASK_TYPE" :"motivation",
+        "head":	"occupation",
+        "relation":	"occupation_motivated_by",
+        "tail":	"motivation"
     },
     {
-        "prompt": "Having experience of [tasks] is required for working as a [MASK] because ",
-        "MASK_TYPE": "occupation", 
-        "prompt_quality": "poor"
+        "prompt": "person seen as the [persona] is often motivated by their needs of the [MASK] and",
+        "MASK_TYPE" :"motivation",
+        "head":	"persona",
+        "relation":	"persona_motivated_by",
+        "tail":	"motivation"
     },
     {
-        "prompt": "person seen as [persona] is perceived as a [MASK] person",
-        "MASK_TYPE": "perception",
-        "prompt_quality": "good"
+        "prompt": "soft skills like the ability to [MASK], which is helpful when tasked to [tasks]",
+        "MASK_TYPE" :"ncskills",
+        "head": 	"ncskills",
+        "relation":	"ncskills_are_helpful_for_task",
+        "tail":	"tasks" 
     },
     {
-        "prompt": "Planning budget requires carefulness. Doing research requires persistence. [tasks] requires [MASK] and ", 
-        "MASK_TYPE": "ncskills", 
-        "prompt_quality": "fair"
+        "prompt": "technician has good Analysis skill; [persona] has good [MASK] skill; mastermind has good Coordination skill;",
+        "MASK_TYPE" :"ncskills",
+        "head": 	"persona",
+        "relation":	"persona_has_ncskills",
+        "tail": 	"ncskills" 
     },
     {
-        "prompt": "A researcher is good at data analysis. A mastermind is good at project management. A [persona] is good at [MASK] and ",
-        "MASK_TYPE": "tasks", 
-        "prompt_quality": "good"
+        "prompt": "Planning budget requires carefulness skill; [tasks] requires [MASK] skill; Analyzing Data requires problem-solving skill;",
+        "MASK_TYPE" :"ncskills",
+        "head": 	"tasks",
+        "relation":	"persona_has_ncskills",
+        "tail": 	"ncskills" 
     },
     {
-        "prompt": "A mastermind is good at scheming. An advocate is good at motivating. A [persona] is good at [MASK] and ",
-        "MASK_TYPE": "ncskills", 
-        "prompt_quality": "good"
+        "prompt": "accountant are perceived as meticulous; [job] are perceived as [MASK]; nurse are perceived as caring;",
+        "MASK_TYPE" :"perception",
+        "head":	"job",
+        "relation":	"job_perceived_as_perception",
+        "tail":	"perception"
     },
     {
-        "prompt": "An executive exhibits traits of leadership. A [occupation] exhibits traits of [MASK] and ", 
-        "MASK_TYPE": "traits",
-        "prompt_quality": "good"
+        "prompt": "person with the [personality] type of personality is often seen as a [MASK] type of person",
+        "MASK_TYPE" :"perception",
+        "head":	"personality",
+        "relation":	"personality_is_seen_as_perception",
+        "tail":	"perception"
     },
     {
-        "prompt": "A banker is motivated by financial success. A [occupation] is motivated by [MASK] and ", 
-        "MASK_TYPE": "values", 
-        "prompt_quality": "good"
+        "prompt": "People working in the [occupation] occupation are often described as [MASK] and  ",
+        "MASK_TYPE" :"perception",
+        "head": 	"occupation",
+        "relation":	"occupation_is_perceived_as_perception",
+        "tail": 	"perception" 
     },
     {
-        "prompt": "A doctor values philanthropy. A [occupation] values [MASK] and ", 
-        "MASK_TYPE": "values", 
-        "prompt_quality": "good"
+        "prompt": "person seen as [perception] is perceived as a very [MASK] person",
+        "MASK_TYPE" :"persona",
+        "head":	"persona",
+        "relation":	"persona_is_perceived_as_perception",
+        "tail":	"perception"
     },
     {
-        "prompt": "An accountant is meticulous. A nurse is caring. A [occupation] is [MASK] and ", 
-        "MASK_TYPE": "traits", 
-        "prompt_quality": "good"
-    },    
-    {
-        "prompt": "working as a [MASK] whom needs [ncskills] and", 
-        "MASK_TYPE": "occupation", 
-        "prompt_quality": "poor"
+        "prompt": "person with a [MASK] personality is good to be working in the [occupation] occupation",
+        "MASK_TYPE" :"personality",
+        "head":	"occupation",
+        "relation":	"occupation_associates_with_personality",
+        "tail":	"personality"
     },
     {
-        "prompt": "Occupation requiring [ncskills] skills: [MASK] and ", 
-        "MASK_TYPE": "occupation", 
-        "prompt_quality": "fair"
+        "prompt": "person with the [MASK] type of personality is often motivated to [motivation]",
+        "MASK_TYPE" :"personality",
+        "head":	"personality",
+        "relation":	"personality_is_related_to_motivation",
+        "tail":	"motivation"
     },
     {
-        "prompt": "People with traits of [traits] are good at [MASK] or ", 
-        "MASK_TYPE": "tasks", 
-        "prompt_quality": "fair"
+        "prompt": "[occupation] occupation is stuitable for person that has a [MASK] type of personality",
+        "MASK_TYPE" :"personality",
+        "head":	"personality",
+        "relation":	"personality_associates_with_occupation",
+        "tail":	"occupation" 
     },
     {
-        "prompt": "People with traits of [traits] are suitable for working as a [MASK] or ", 
-        "MASK_TYPE": "occupation", 
-        "prompt_quality": "fair"
+        "prompt": "courses involving lots of [MASK] are often taken by students enrolled in the [fieldOfStudy] department",
+        "MASK_TYPE" :"skill",
+        "head":	"fieldOfStudy",
+        "relation":	"fieldOfStudy_is_related_to_skill",
+        "tail":	"skill"
     },
     {
-        "prompt": "A [occupation] requires knowledge in [MASK] and ", 
-        "MASK_TYPE": "fieldOfStudy", 
-        "prompt_quality": "good"
+        "prompt": "being able to [MASK] is neccessary to work as a [job]",
+        "MASK_TYPE" :"skill",
+        "head":	"job",
+        "relation":	"job_need_to_do_skill",
+        "tail":	"skill"
     },
     {
-        "prompt": "A [persona] is suitable to work as a [MASK] or ", 
-        "MASK_TYPE": "occupation", 
-        "prompt_quality": "fair"
+        "prompt": "knowing how [MASK] works is essential to work as a [job]",
+        "MASK_TYPE" :"skill",
+        "head":	"job",
+        "relation":	"job_need_understand_skill",
+        "tail":	"skill"
     },
     {
-        "prompt": "A person who values [values] is suitable to work as a [MASK] and ", 
-        "MASK_TYPE": "occupation", 
-        "prompt_quality": "good"
+        "prompt": "understanding of how [skill] works is a must before learning about other more advanced topics like [MASK], because",
+        "MASK_TYPE" :"skill",
+        "head":	"skill",
+        "relation":	"skill_is_related_to_skill",
+        "tail":	"skill"
     },
     {
-        "prompt": "working as a [MASK] whom values [values] and ", 
-        "MASK_TYPE": "occupation", 
-        "prompt_quality": "poor"
+        "prompt": "understanding of how the [MASK] works is a must before learning about other more advanced topics like [skill], because",
+        "MASK_TYPE" :"skill",
+        "head":	"skill",
+        "relation":	"skill_is_related_to_skill",
+        "tail":	"skill"
     },
     {
-        "prompt": "[tasks] makes a person feel [MASK] and ", 
-        "MASK_TYPE": "values"
+        "prompt": "[tasks] requires strong [MASK] skills to ",
+        "MASK_TYPE" :"skill",
+        "head":	"tasks",
+        "relation":	"tasks_needs_skill",
+        "tail":	"skill"
     },
     {
-        "prompt": "Solving problems requires analytical skills. [tasks] requires [MASK] and ", 
-        "MASK_TYPE": "ncskills", 
-        "prompt_quality": "good" 
+        "prompt": "Solving problems requires analytical skills; [tasks] requires [MASK] skills;",
+        "MASK_TYPE" :"skill",
+        "head":	"tasks",
+        "relation":	"tasks_requires_skill",
+        "tail":	"skill"
     },
     {
-        "prompt": "A hero is brave. A mastermind is calculating. A [persona] is [MASK] and ", 
-        "MASK_TYPE": "traits", 
-        "prompt_quality": "good"
+        "prompt": "people in the [MASK] occupation are often tasked to [MASK]",
+        "MASK_TYPE" :"tasks",
+        "head": 	"occupation",
+        "relation":	"occupation_is_related_to_task",
+        "tail":	"tasks" 
     },
     {
-        "prompt": "People with traits of [traits] are not for working as a [MASK] or ", 
-        "MASK_TYPE": "occupation"
+        "prompt": "[occupation] occupation is stuitable for person that enjoys doing [MASK] and",
+        "MASK_TYPE" :"tasks",
+        "head": 	"tasks",
+        "relation":	"tasks_associates_with_occupation",
+        "tail":	"occupation"
     },
     {
-        "prompt": "People working as [occupation] are often described as [MASK] and ", 
-        "MASK_TYPE": "perception", 
-        "prompt_quality": "good"
+        "prompt": "People with strong traits of [MASK] are suitable for working in the [occupation] occupation, since ",
+        "MASK_TYPE" :"traits",
+        "head":	"occupation",
+        "relation":	"occupation_need_traits",
+        "tail":	"traits"
     },
     {
-        "prompt": "A [persona] is good at working as a [MASK] and ",
-        "MASK_TYPE": "occupation"
+        "prompt": "A hero is a brave person; A [persona] is a [MASK] person; A mastermind is a calculating person;",
+        "MASK_TYPE" :"traits",
+        "head": 	"persona",
+        "relation":	"persona_has_traits",
+        "tail": 	"traits" 
     }
 ]

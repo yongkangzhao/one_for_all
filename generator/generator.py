@@ -90,7 +90,7 @@ def main(args):
                     continue
 
                 try:
-                    tokens = prober(query_prompt, topk=20, max_new_tokens=50)
+                    tokens = prober(query_prompt, topk=20, max_new_tokens=10)
                 except Exception as e:
                     print("Error: ", e)
                     continue

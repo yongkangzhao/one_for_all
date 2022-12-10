@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One For All</title>
+    <!-- style to make grid 2 x 7 -->
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            grid-gap: 5px;
+            background-color: #2196F3;
+            padding: 1px;
+        }
+        .grid-item {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.8);
+            padding: 5px;
+            font-size: 15px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>One For All</h1>
+
+    <!-- create a large textbox -->
+    <p><h3>Tell me about yourself</h3></p>
+
+    <p>Please enter one short paragraph about yourself</p>
+    <p>may also try to place other type of text document here to try, for example your work experience, linkedin about, journal entries, etc</p>
+
+    <textarea cols="110" rows="5" id="question" maxlength="500" minlength="20" autofocus required ></textarea><br>
+    <button id="submit">Submit</button>
+
+    <p>
+        <span id="answer"></span>
+    </p>
+
+    <script src="app.js"></script>
+</body>
+</html>

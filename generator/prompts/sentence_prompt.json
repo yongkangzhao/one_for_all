@@ -24,7 +24,7 @@
         "MASK_TYPE": "traits"
     },
     {
-        "prompt": "Reasons you hate people with [TRAITS]. They ",
+        "prompt": "Reasons you hate people with [traits]. They ",
         "MASK_TYPE": "traits"
     },
     {
@@ -36,20 +36,20 @@
         "MASK_TYPE": "persona"
     },
     {
-        "prompt": "I am motivated by [values]. I wish that ", 
-        "MASK_TYPE": "values"
+        "prompt": "I am motivated by [motivation]. I wish that ", 
+        "MASK_TYPE": "motivation"
     }, 
     {
-        "prompt": "[values] is all I want. I wish that ", 
-        "MASK_TYPE": "values"
+        "prompt": "[motivation] is all I want. I wish that ", 
+        "MASK_TYPE": "motivation"
     }, 
     {
-        "prompt": "Why do people care about [values]? ",
-        "MASK_TYPE": "values"
+        "prompt": "Why do people care about [motivation]? ",
+        "MASK_TYPE": "motivation"
     },
     {
-        "prompt": "I desire [VALUE] in life. My dream is ",
-        "MASK_TYPE": "values"
+        "prompt": "I desire [motivation] in life. My dream is ",
+        "MASK_TYPE": "motivation"
     },
     {
         "prompt": "He is very good at [ncskills]. What does he do? ",
@@ -84,7 +84,57 @@
         "MASK_TYPE": "tasks"
     },
     {
-        "prompt": "Tell me a story about [tasks] without using words regarding [tasks]. ",
+        "prompt": "in a paragraph, tell me about an experience that has to do with [concept]. ",
+        "MASK_TYPE": "concept"
+    },
+    {
+        "prompt": "in a paragraph, tell me about an experience that has to do with [feel]. ",
+        "MASK_TYPE": "feel"
+    },
+    {
+        "prompt": "in a paragraph, tell me about an experience that has to do with [job]. ",
+        "MASK_TYPE": "job"
+    },
+    {
+        "prompt": "in a paragraph, tell me about an experience that has to do with [perception]. ",
+        "MASK_TYPE": "perception"
+    },
+    {
+        "prompt": "in a paragraph, tell me about an experience that has to do with [personality]. ",
+        "MASK_TYPE": "personality"
+    },
+    {
+        "prompt": "in a paragraph, tell me about an experience that has to do with [skill]. ",
+        "MASK_TYPE": "skill"
+    },
+    {
+        "prompt": "in a paragraph, tell me about an experience that has to do with [occupation]. ",
+        "MASK_TYPE": "occupation"
+    },
+    {
+        "prompt": "in a paragraph, tell me about an experience that has to do with [persona]. ",
+        "MASK_TYPE": "persona"
+    },
+    {
+        "prompt": "in a paragraph, tell me about an experience that has to do with [motivation]. ",
+        "MASK_TYPE": "motivation"
+    },
+    {
+        "prompt": "in a paragraph, tell me about an experience that has to do with [ncskills]. ",
+        "MASK_TYPE": "ncskills"
+    },
+    {
+        "prompt": "in a paragraph, tell me about an experience that has to do with [fieldOfStudy]. ",
+        "MASK_TYPE": "fieldOfStudy"
+    },
+    {
+        "prompt": "in a paragraph, tell me about an experience that has to do with [tasks]. ",
         "MASK_TYPE": "tasks"
+    },
+    {
+        "prompt": "in a paragraph, tell me about an experience that has to do with [traits]. ",
+        "MASK_TYPE": "traits"
     }
+    
+
 ]

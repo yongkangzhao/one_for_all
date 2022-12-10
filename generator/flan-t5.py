@@ -44,12 +44,17 @@ input_text = "What does Working with the Public involve?"
 input_text = "What does it take to Working with the Public?"
 
 
-input_text = "Tell me a story about software engineering without using words regarding software engineering."
+input_text = "Tell me a story about software engineering without using the word itself.."
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+model.to(device)
+
 input_ids = tokenizer(input_text, return_tensors="pt").input_ids.to(device)
 
-outputs = model.generate(input_ids, max_new_tokens=80,
+
+
+outputs = model.generate(input_ids.to(device), max_new_tokens=80,
                                                   num_beams=30,
                                                   repetition_penalty=10.0,
                                                   length_penalty=1.0,
